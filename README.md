@@ -1,12 +1,28 @@
 # Hadoop_Sprachvergleich
 
-Aufgabe 11 für die uni:
+## Anforderungen 
+
+### Aufgabe
+
+Aufgabe 11
+
 - Zählen der Wörterlänge (pro Sprache)
 - Sortieren der Wörter der Länge nach (pro Sprache)
 - Zusammenfassen der Ergebnisse
 
 Form: "Sprache – Längstes Wort – Länge“
 (nur das längste Wort pro Sprache herausfinden?!)
+
+### Dokumentation
+
+10+ Seiten und mindestens die folgenden Bestandteile enthalten:
+- Kurze Beschreibung und Erklärung der Aufgabe
+- Detaillierte Lösungsbeschreibung
+- Code-Fragmente mit einer Textbeschreibung
+- Screenshots für die Ergebnisse und/oder Zwischenergebnisse
+- Ausführliche Testsder Anwendung
+- Tabellen, Graphen und Diagrammen für die Leistungund vergleichendeLaufzeit
+- Kurzes Fazit
 
 
 
@@ -26,6 +42,7 @@ Auf dem Mac entstanden viele Fehler durch Berechtigungsprobleme beim SSH Zugriff
 Zu einem Zeitpunkt funktionierte der Hadoop-Cluster teilweise. Wir konnten jeweils einmal die Seiten: 'localhost:50070' oder 'localhost:8088' aufrufen. Leider ging es danach wieder nicht. Es gibt wohl öfter Probleme beim Starten und Beenden von YARN.
 
 ### Hadoop 2.7.0 in Docker als Lösung:
+[Docker-Image](https://hub.docker.com/r/sequenceiq/hadoop-docker/)
 ```docker pull sequenceiq/hadoop-docker:2.7.0```
 ```docker run -it sequenceiq/hadoop-docker:2.7.0 /etc/bootstrap.sh -bash```
 
@@ -81,5 +98,4 @@ job 3: aggregate longest words
 
 - Erstellen von Klassen: main, Mapper & Reducer
 - 'FileInputFormat.addInputPaths' erstellen durch Methode, die den Ordner (und alle weiteren Unterordner) nach Dateien durchsucht.
-
 
