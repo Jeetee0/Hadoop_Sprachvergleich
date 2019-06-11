@@ -1,0 +1,9 @@
+src/main/resources/full/
+target/
+bin/
+.settings/
+.project
+.classpath
+.idea
+.vscode
+.DS_Store
