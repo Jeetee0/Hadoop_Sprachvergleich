@@ -38,17 +38,26 @@ public class Hadoop_Sprachvergleich {
         String rootPath = args[0];
         String destinationPath = args[1];
         File[] languageDirectories = new File(rootPath).listFiles();
+        int currentState = 1;
+        int languages = languageDirectories.length;
 
         // create a different job for each language folder
-        System.out.println("------------------------------------ DEBUG: Looping through subdirectories of rootfolder: '" + rootPath + "' ------------------------------------");
+        System.out.println("------------------------------------ DEBUG: Looping through subdirectories of rootfolder: '" + rootPath + "'. ------------------------------------");
+
         for (File language : languageDirectories) {
+            System.out.println("------------------------------------ DEBUG: Current state: '" + currentState + "/" + languages + "' languages counted. ------------------------------------");
             startJobToCountWordLengthForAFolder(conf, language, destinationPath);
+            currentState += 1;
         }
+
+
+        //todo: aggregate outputs
+        //data is located at: /hadoop_sprachvergleich/output/<language>/part-r-00000
     }
 
     private static void startJobToCountWordLengthForAFolder(Configuration conf, File languageFolderFile, String destinationPath) throws IOException, InterruptedException, ClassNotFoundException {
         String currentLanguage = languageFolderFile.getName();
-        System.out.println("------------------------------------ DEBUG: Start counting words for language folder: '" + currentLanguage + "' ------------------------------------");
+        System.out.println("------------------------------------ DEBUG: Start counting words for language folder: '" + currentLanguage + "'. ------------------------------------");
 
         Job job = Job.getInstance(conf, "Word length counting for language: ");
         job.setJarByClass(Hadoop_Sprachvergleich.class);
@@ -71,63 +80,6 @@ public class Hadoop_Sprachvergleich {
 
         job.waitForCompletion(true);
 
-        System.out.println("------------------------------------ DEBUG: Completed counting for language folder: " + currentLanguage + " ------------------------------------");
-    }
-
-
-
-
-
-    private static String loopThroughDirectory(String pathToLanguageFolder) throws NullPointerException, IOException {
-
-        System.out.println("------------------------------------ DEBUG: start path: " + pathToLanguageFolder);
-        // this String will be accumulated with absolute paths to txt-files separated by a comma. it will be used as Input for the hadoop job
-        StringBuilder pathsToTxtFiles = new StringBuilder();
-
-        // accept folder with txt files in
-        File[] languages = new File(pathToLanguageFolder).listFiles();
-
-        // /<language>/TXT/<txt files>
-        for (File laguage : languages) {
-            if (laguage.isDirectory()) {
-                File[] subdirectories = laguage.listFiles();
-
-                // /TXT/<txt files>
-                for (File subdirectory : subdirectories) {
-                    if (subdirectory.isDirectory()) {
-                        File[] txtFilesOfOneLanguage = subdirectory.listFiles();
-
-                        // /<txt files>
-                        for (File txtFile : txtFilesOfOneLanguage) {
-                            if (!txtFile.isDirectory()) {
-                                String currentPath = txtFile.getAbsolutePath();
-                                //System.out.println("DEBUG: currentPath: " + currentPath);
-                                //todo replace ',' in path?
-                                if (currentPath.contains(", ")) {
-                                    System.out.println();
-                                    System.out.println();
-                                    System.out.println("------------------------------------ DEBUG: contains ',': " + currentPath);
-                                    java.nio.file.Path source = Paths.get(currentPath);
-                                    Files.move(source, source.resolveSibling(currentPath.replace(',', '_')));
-                                    currentPath = txtFile.getAbsolutePath();
-                                }
-
-                                //quick fix: skip paths that contain '._'
-                                if (!currentPath.contains("._")) {
-                                    pathsToTxtFiles.append(currentPath);
-                                    pathsToTxtFiles.append(",");
-                                }
-
-
-                                //pathsToTxtFiles.append(.replaceAll(",","\\,"));
-
-
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return pathsToTxtFiles.toString();
+        System.out.println("------------------------------------ DEBUG: Completed counting for language folder: '" + currentLanguage + "'. ------------------------------------");
     }
 }

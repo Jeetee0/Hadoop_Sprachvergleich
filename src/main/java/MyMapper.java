@@ -13,10 +13,12 @@ public class MyMapper extends Mapper<LongWritable, Text, LongWritable, Text> {
     private String longestWord = "";
 
     protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
+        
+        // todo: use regex for word splitting
+        // currently getting a lot of 'combined-words' with punctuation etc.
+
         StringTokenizer itr = new StringTokenizer(value.toString());
 
-        // mapping will be done for each language
-        System.out.println("DEBUG: Mapper started mapping...");
         while (itr.hasMoreTokens()) {
             word.set(itr.nextToken());
 
@@ -28,7 +30,6 @@ public class MyMapper extends Mapper<LongWritable, Text, LongWritable, Text> {
     }
 
     protected void cleanup(Context context) throws IOException, InterruptedException {
-        System.out.println("DEBUG: Mapper is at cleanup...");
         context.write(new LongWritable(maxLength), new Text(longestWord));
     }
 }
