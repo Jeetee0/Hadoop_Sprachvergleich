@@ -1,1 +1,5 @@
-Input/
+.classpath
+.project
+.settings/
+.vscode/
+target/
