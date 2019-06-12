@@ -24,80 +24,107 @@ Form: "Sprache – Längstes Wort – Länge“
 - Tabellen, Graphen und Diagramme für die Leistung und vergleichende Laufzeit
 - Kurzes Fazit
 
-
+---
 
 ## Aufsetzen der Hadoop-Umgebung
 
 ### Installation:
 
-Folgende Links & Anleitungen wurden genutzt:
-- https://medium.com/@jayden.chua/installing-hadoop-on-macos-a334ab45bb3
-- https://isaacchanghau.github.io/post/install_hadoop_mac/
+Das Aufsetzen von Hadoop gestaltete sich als sehr schwierig. Sowohl auf Windows, als auch auf Linux und Mac gab es unterschiedliche Probleme. Verschiedene Anleitungen & Hadoop-Versionen wurden ausprobiert. Auch [Stackoverflow](https://stackoverflow.com/questions/14932794/problems-in-setting-hadoop-on-mac-os-x-10-8) [und](https://medium.com/@jayden.chua/installing-hadoop-on-macos-a334ab45bb3) [andere](https://gist.github.com/christine-le/2a5dd75c9e0a2f87bc1edda42c9b8206) [Foren](https://isaacchanghau.github.io/post/install_hadoop_mac/) konnten die Probleme nicht vollständig beseitigen.
 
-- https://stackoverflow.com/questions/14932794/problems-in-setting-hadoop-on-mac-os-x-10-8
-- https://gist.github.com/christine-le/2a5dd75c9e0a2f87bc1edda42c9b8206
+Auf dem Mac entstanden viele Fehler durch Berechtigungsprobleme beim SSH Zugriff auf localhost. Zu einem Zeitpunkt funktionierte der Hadoop-Cluster teilweise. Wir konnten jeweils einmal die Seiten: <localhost:50070> oder <localhost:8088> aufrufen. Leider ging es danach wieder nicht. Es gibt wohl öfter Probleme beim Starten und Beenden von YARN.
 
-Das Aufsetzen gestaltete sich als sehr schwierig. Verschiedene Anleitungen & Hadoop-Versionen wurden ausprobiert. Die Installation wurde auf Mac & Linux getestet.
-Auf dem Mac entstanden viele Fehler durch Berechtigungsprobleme beim SSH Zugriff auf localhost.
-Zu einem Zeitpunkt funktionierte der Hadoop-Cluster teilweise. Wir konnten jeweils einmal die Seiten: <localhost:50070> oder <localhost:8088> aufrufen. Leider ging es danach wieder nicht. Es gibt wohl öfter Probleme beim Starten und Beenden von YARN.
+Auf Linux konnte Hadoop zwar vermeintlich installiert werden, die Beispiele erreichen beim Testen dann jedoch nicht alle Nodes. 
 
-#### Hadoop 2.7.0 in Docker als Lösung:
-Docker container mit folgendem Image wurde genutzt: https://hub.docker.com/r/sequenceiq/hadoop-docker/
+Aus diesen Gründen wurden sich gegen eine einfache Lokale installation und für eine Containerisierungslösung entschieden. So können auch Sie schneller und verlässlicher Testen.
 
-```docker pull sequenceiq/hadoop-docker:2.7.0```
+#### Hadoop mit Docker
+Wir empfehlen das Hadoop Docker Image von [sequenceiq](https://hub.docker.com/r/sequenceiq/hadoop-docker/). Wir markieren jeden Komandozeilenausschnitt mit `Local` oder `Docker` um zu verdeutlichen ob die Befehle für das Hostsystem oder innerhalb des Docker Containers `[Todo]` die Befehle für Es kann mit folgendem Komando heruntergeladen und in der shell gestartet werden:
 
-```docker run -it sequenceiq/hadoop-docker:2.7.0 /etc/bootstrap.sh -bash```
+```
+docker pull sequenceiq/hadoop-docker:2.7.0
 
-Das Testbeispiel funktionierte einwandfrei:
+docker run -it sequenceiq/hadoop-docker:2.7.0 /etc/bootstrap.sh -bash
+```
 
-```cd $HADOOP_PREFIX```
+Um den Docker Container zu testen kann das mitgelieferte Beispiel wie folgt ausgeführt und dessen Ergebnisse ausgelesen werden. 
 
-```bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.0.jar grep input output 'dfs[a-z.]+'```
+```
+cd $HADOOP_PREFIX
 
-```bin/hdfs dfs -cat output/*```
+bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.0.jar grep input output 'dfs[a-z.]+'
 
+bin/hdfs dfs -cat output/*
+```
 ### Entwicklerumgebung
 
-Da bereits Vorkenntnisse vorhanden sind, gestaltete sich das Einrichten der Entwicklerumgebung einfacher. Es wurde ein Maven-Projekt erstellt. Dort kann nach Einbinden der Dependencies: 'hadoop-core' & 'hadoop-mapreduce-client-core' für Hadoop programmiert werden.
+Mittels IDE oder Konsole kann ein Maven-Projekt erstellt werden, in welchem die  Dependencies `hadoop-core` und `hadoop-mapreduce-client-core`  eingebunden werden müssen.
 
+---
 
 ## Vorbereitung zur Ausführung:
 
 Erst einmal muss die 'full.zip' heruntergeladen werden. Diese enthält Beispiel-Text-Dateien, die analysiert werden sollen.
 Begriffe in Klammern geben die Umgebung an, auf der der Befehl ausgeführt werden muss.
-```cp ~/Downloads```	(__Local__)
-```mv full.zip ~/Desktop/all_languages_unedited.zip```	(__Local__)
+
+__Local__:
+```
+cp ~/Downloads
+mv full.zip ~/Desktop/all_languages_unedited.zip
+```
 
 Um sich mit der Docker-Instanz zu verbinden holt man sich die container-id mit:
 ```docker ps```.
 Danach kann man sich zum Container verbinden: 
-```docker exec -it <docker container_id> /bin/bash```	(__Local__)
+
+__Local__:
+```
+docker exec -it <docker container_id> /bin/bash
+```
 
 
 Danach muss das Archiv aufs verteilte Hadoop-Dateisystem (HDFS) hochgeladen und entpackt  werden:
 
-```mkdir /hadoop_sprachvergleich /hadoop_sprachvergleich/all_languages```				(__Docker__)
+__Docker__:
+```
+mkdir /hadoop_sprachvergleich /hadoop_sprachvergleich/all_languages
+```
 
-```docker cp ~/Desktop/all_languages_unedited.zip <containerId>:/hadoop_sprachvergleich/``` (__Local__)
-
-```unzip all_languages_unedited.zip```	(__Docker__)
+```bash
+docker cp ~/Desktop/all_languages_unedited.zip <containerId>:/hadoop_sprachvergleich/
+```
+```
+unzip /hadoop_sprachvergleich/all_languages_unedited.zip -d /hadoop_sprachvergleich/all_languages
+```	
 
 Hier gab es Probleme mit der Umwandlung der kyrillischen Buchstaben. Ich nahm die kyrillischen Buchstaben und wandelte sie in lateinische um. (Bild)
+```bash
+mv \#U0420#U0443#U0441#U0441#U043a#U0438#U0439/ Russkyj
+mv \#U0423#U043a#U0440#U0430#U0457#U043d#U0441#U044c#U043a#U0430/ Ukrajinska
+```
 
-```$HADOOP_PREFIX/bin/hdfs dfs -put /hadoop_sprachvergleich/all_languages /hadoop_sprachvergleich```		(__Docker__)
+
+__Docker__:
+```
+$HADOOP_PREFIX/bin/hdfs dfs -put /hadoop_sprachvergleich/all_languages /hadoop_sprachvergleich
+```
 
 
 Da wir ein Maven-Projekt benutzen, wird nach der Implementierung das '.jar' folgendermaßen erzeugt und auf das verteilte Hadoop-Dateisystem (HDFS) hochgeladen:
-- ```cd <Project>```	(__Local__)
-- ```mvn clean package```	(__Local__)
-- ```mv target/hadoop_sprachvergleich-1.0-SNAPSHOT.jar target/hadoop_sprachvergleich.jar```	(__Local__)
-- ```docker cp target/hadoop_sprachvergleich.jar <containerId>:/hadoop_sprachvergleich/```	(__Local__)
+
+__Local__:
+```
+cd <Project>
+mvn clean package
+mv target/hadoop_sprachvergleich-1.0-SNAPSHOT.jar target/hadoop_sprachvergleich.jar
+docker cp target/hadoop_sprachvergleich.jar <containerId>:/hadoop_sprachvergleich
+```
 
 Um diesen Prozess zu automatisieren, wurde das Skript ```create&copyJar.sh``` geschrieben.
 
 Um den Hadoop-Job zu starten wird folgender Befehl ausgeführt:
 
-```$HADOOP_PREFIX/bin/hadoop jar /hadoop_sprachvergleich/hadoop_sprachvergleich.jar Hadoop_Sprachvergleich /hadoop_sprachvergleich/all_languages /hadoop_sprachvergleich/output/```	(__Docker__)
+__Docker__:```$HADOOP_PREFIX/bin/hadoop jar /hadoop_sprachvergleich/hadoop_sprachvergleich.jar Hadoop_Sprachvergleich /hadoop_sprachvergleich/all_languages /hadoop_sprachvergleich/output/```
 
 
 ### useful commands:

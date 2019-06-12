@@ -25,6 +25,7 @@ public class Hadoop_Sprachvergleich {
     stuff todo:
     - pro Sprache: wörterlänge zählen, sortieren nach länge
     - ergebnisse zusammenfassen: längste wörter pro sprache in zieldatei (Form: Sprache – Längstes Wort – Länge)
+    todo: timer
 
 
      */
@@ -38,16 +39,17 @@ public class Hadoop_Sprachvergleich {
         String rootPath = args[0];
         String destinationPath = args[1];
         File[] languageDirectories = new File(rootPath).listFiles();
-        int currentState = 1;
+        int languageProgress = 1;
         int languages = languageDirectories.length;
 
-        // create a different job for each language folder
-        System.out.println("------------------------------------ DEBUG: Looping through subdirectories of rootfolder: '" + rootPath + "'. ------------------------------------");
 
+        System.out.println("------------------------------------ DEBUG: Looping through subdirectories of rootfolder: '" + rootPath + "'. ------------------------------------");
+        // create a different job for each language folder
+        
         for (File language : languageDirectories) {
-            System.out.println("------------------------------------ DEBUG: Current state: '" + currentState + "/" + languages + "' languages counted. ------------------------------------");
+            System.out.println("------------------------------------ DEBUG: Current state: '" + languageProgress + "/" + languages + "' languages counted. ------------------------------------");
             startJobToCountWordLengthForAFolder(conf, language, destinationPath);
-            currentState += 1;
+            languageProgress += 1;
         }
 
 
