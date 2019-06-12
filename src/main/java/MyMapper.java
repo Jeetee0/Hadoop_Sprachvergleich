@@ -13,14 +13,14 @@ public class MyMapper extends Mapper<LongWritable, Text, LongWritable, Text> {
     private String longestWord = "";
 
     protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
-        
-        // todo: use regex for word splitting
-        // currently getting a lot of 'combined-words' with punctuation etc.
 
+        // todo: use better? regex for word splitting
+        // currently getting '-' not replaced
         StringTokenizer itr = new StringTokenizer(value.toString());
 
         while (itr.hasMoreTokens()) {
-            word.set(itr.nextToken());
+            String currentToken = itr.nextToken().replaceAll("([\\p{Punct}])","").trim().toLowerCase();
+            word.set(currentToken);
 
             if (word.getLength() > maxLength) {
                 maxLength = word.getLength();

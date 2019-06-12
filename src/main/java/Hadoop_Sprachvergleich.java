@@ -51,7 +51,7 @@ public class Hadoop_Sprachvergleich {
         }
 
 
-        //todo: aggregate outputs
+        //todo: aggregate outputs into one final file
         //data is located at: /hadoop_sprachvergleich/output/<language>/part-r-00000
     }
 
