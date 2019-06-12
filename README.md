@@ -110,8 +110,8 @@ Um den Hadoop-Job zu starten wird folgender Befehl ausgeführt:
 ## Implementierung
 Derzeitiger Ansatz:
 - pro Sprache einen Job, der MapReduce-Prozess ausführt -> findet längstes Wort pro Sprache
--- Map: Länge des Wortes berechnen, Abspeichern als <Key>,<Value>: <Länge>,<Wort>
--- Reduce: das längste Wort als Maximum speichern & sortieren nach Länge (Key)
+    - Map: Länge des Wortes berechnen, Abspeichern als <Key>,<Value>: <Länge>,<Wort>
+    - Reduce: das längste Wort als Maximum speichern & sortieren nach Länge (Key)
 - Zusammenfassen der längsten Wörter
 
 
