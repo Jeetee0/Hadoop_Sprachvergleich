@@ -12,6 +12,7 @@ public class MyReducer extends Reducer<LongWritable, Text, LongWritable, Text> {
     public void reduce(LongWritable key, Iterable<Text> values, Mapper.Context context) throws IOException, InterruptedException {
         // remove duplicates
         // find max for each language
+        // todo: find maximum of longest words
         if (!maximumFound) {
             for (Text t : values) {
                 context.write(key, t);
