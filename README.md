@@ -83,7 +83,7 @@ Danach muss das Archiv aufs verteilte Hadoop-Dateisystem (HDFS) hochgeladen und 
 
 __Docker:__
 ```
-
+$HADOOP_PREFIX/bin/hdfs dfs -mkdir /hadoop_sv /hadoop_sv/textfiles/
 $HADOOP_PREFIX/bin/hdfs dfs -put /hadoop_sv/textfiles /hadoop_sv/textfiles
 ```
 
@@ -147,3 +147,50 @@ Derzeitige Probleme:
 - two languages fail to unzip (picture) -> renamed
 - use regex for word splitting, currently getting a lot of combines words
 
+
+## TODO Bei neukompellierung:
+
+1. Alte Jar löschen:
+
+A. Automatisch: Run `delete_jars.sh`
+B. Manuell
+__Docker:__
+```
+rm /hadoop_sv/hadoop_sv.jar
+$HADOOP_PREFIX/bin/hdfs dfs -rm /hadoop_sv/hadoop_sv.jar
+```
+
+2. Neue Datei kompellieren und aufs System Kopieren
+
+__Local:__
+
+```
+mvn clean package
+mv target/Hadoop_sv-1.0-SNAPSHOT.jar target/hadoop_sv.jar
+docker cp target/hadoop_sv.jar <containerId>:/hadoop_sv
+```
+
+3. Ausführen:
+
+__Docker:__
+```
+$HADOOP_PREFIX/bin/hadoop jar /hadoop_sv/hadoop_sv.jar Hadoop_sv /hadoop_sv/textfiles /hadoop_sv/output/
+```
+
+
+## Statistiken
+
+
+Runtime für *small.zip: 
+
+| JOB No. | Mapper A| Mapper B|
+| ----|----:| ---:|
+| 1 |20s |19s |
+| 2 |27s |26s |
+| 3 |21s |21s |
+| 4 |28s |27s |
+| 5 |25s |25s |
+| 6 |25s |24s |
+| 7 |37s |37s |
+| 8 |25s |25s |
+| `Total` | `213s` | `209s` |

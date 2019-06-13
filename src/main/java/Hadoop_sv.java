@@ -23,15 +23,14 @@ public class Hadoop_sv {
 
     /*
     stuff todo:
-    - pro Sprache: wörterlänge zählen, sortieren nach länge
     - ergebnisse zusammenfassen: längste wörter pro sprache in zieldatei (Form: Sprache – Längstes Wort – Länge)
-    todo: timer
-
 
      */
 
     public static void main( String[] args ) throws IOException, ClassNotFoundException, InterruptedException
     {
+        long totalStart = System.currentTimeMillis();
+
         Configuration conf = new Configuration();
 
         // input folder should have the following structure:
@@ -43,15 +42,22 @@ public class Hadoop_sv {
         int languages = languageDirectories.length;
 
 
-        System.out.println("------------------------------------ DEBUG: Looping through subdirectories of rootfolder: '" + rootPath + "'. ------------------------------------");
+        debugMessage(String.format("Looping through subdirectories of rootfolder: '%s'", rootPath), "DEBUG");
         // create a different job for each language folder
         
         for (File language : languageDirectories) {
-            System.out.println("------------------------------------ DEBUG: Current state: '" + languageProgress + "/" + languages + "' languages counted. ------------------------------------");
+            long start = System.currentTimeMillis();
+
+            debugMessage(String.format("Current state: '%s/%s' languages counted.", languageProgress, languages), "DEBUG");
             startJobToCountWordLengthForAFolder(conf, language, destinationPath);
             languageProgress += 1;
+
+            long timeElapsed = (System.currentTimeMillis() - start)/1000;
+            debugMessage(String.format("Time Elapsed for this language: %ds", timeElapsed), "TIMER");
         }
 
+        long totalTimeElapsed = (System.currentTimeMillis() - totalStart)/1000;
+        debugMessage(String.format("Time Elapsed for alle Jobs: %ds", totalTimeElapsed), "TIMER");
 
         //todo: aggregate outputs into one final file
         //data is located at: /hadoop_sprachvergleich/output/<language>/part-r-00000
@@ -59,7 +65,7 @@ public class Hadoop_sv {
 
     private static void startJobToCountWordLengthForAFolder(Configuration conf, File languageFolderFile, String destinationPath) throws IOException, InterruptedException, ClassNotFoundException {
         String currentLanguage = languageFolderFile.getName();
-        System.out.println("------------------------------------ DEBUG: Start counting words for language folder: '" + currentLanguage + "'. ------------------------------------");
+        debugMessage(String.format("Start counting words for language folder: '%s''", currentLanguage), "DEBUG");
         
         Job job = Job.getInstance(conf, "Word length counting for language: ");
         job.setJarByClass(Hadoop_sv.class);
@@ -82,6 +88,11 @@ public class Hadoop_sv {
 
         job.waitForCompletion(true);
 
-        System.out.println("------------------------------------ DEBUG: Completed counting for language folder: '" + currentLanguage + "'. ------------------------------------");
+        debugMessage(String.format("DEBUG: Completed counting for language folder: '%s'.", currentLanguage), "DEBUG");
+    }
+
+    private static void debugMessage(String msg, String type){
+        String spaceing = "------------------------------------";
+        System.out.println(String.format("%s %s: %s %s", spaceing, type, msg, spaceing));
     }
 }
