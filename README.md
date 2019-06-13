@@ -39,12 +39,14 @@ Auf Linux konnte Hadoop zwar vermeintlich installiert werden, die Beispiele erre
 Aus diesen Gründen wurden sich gegen eine einfache Lokale installation und für eine Containerisierungslösung entschieden. So können auch Sie schneller und verlässlicher Testen.
 
 #### Hadoop mit Docker
-Wir empfehlen das Hadoop Docker Image von [sequenceiq](https://hub.docker.com/r/sequenceiq/hadoop-docker/). Wir markieren jeden Komandozeilenausschnitt mit `Local` oder `Docker` um zu verdeutlichen ob die Befehle für das Hostsystem oder innerhalb des Docker Containers `[Todo]` die Befehle für Es kann mit folgendem Komando heruntergeladen und in der shell gestartet werden:
+`Note:` In dieser Dokumentation markieren wir jeden Komandozeilenausschnitt mit `Local` oder `Docker` um zu verdeutlichen ob die Befehle für das Hostsystem oder innerhalb des Docker Containers ausgeführt werden. 
+
+Unser Dockerfile basiert auf dem Hadoop Docker Image von [sequenceiq](https://hub.docker.com/r/sequenceiq/hadoop-docker/), befindet sich in `./Docker/Dockerfile` und kann wie folt gebaut und ausgeführt werden
 
 ```
-docker pull sequenceiq/hadoop-docker:2.7.0
+docker build -t sv .
 
-docker run -it sequenceiq/hadoop-docker:2.7.0 /etc/bootstrap.sh -bash
+docker run -it sv /etc/bootstrap.sh -bash
 ```
 
 Um den Docker Container zu testen kann das mitgelieferte Beispiel wie folgt ausgeführt und dessen Ergebnisse ausgelesen werden. 
@@ -64,75 +66,71 @@ Mittels IDE oder Konsole kann ein Maven-Projekt erstellt werden, in welchem die 
 
 ## Vorbereitung zur Ausführung:
 
-Erst einmal muss die 'full.zip' heruntergeladen werden. Diese enthält Beispiel-Text-Dateien, die analysiert werden sollen.
-Begriffe in Klammern geben die Umgebung an, auf der der Befehl ausgeführt werden muss.
+### Resourcen auf Container bringen
 
-__Local__:
-```
-cp ~/Downloads
-mv full.zip ~/Desktop/all_languages_unedited.zip
-```
+In `./Docker/` befindet sich die Input datei (`textfiles.zip`) und eine kleinere Testdatei (`textfiles_mini.zip`) . Diese enthalten Beispiel-Text-Dateien, die analysiert werden sollen.
+Diese Dateien werden Automatisch durch das Dockerfile in den Docker Container kopiert. Um andere Dateien zu testen kann das Dockerfile bearbeitet werden. 
 
-Um sich mit der Docker-Instanz zu verbinden holt man sich die container-id mit:
-```docker ps```.
-Danach kann man sich zum Container verbinden: 
+Um sich mit der Docker-Instanz zu verbinden holt man sich die container-id mit `docker ps`.
+Danach kann man sich zum Container verbinden.
 
-__Local__:
+__Local:__
 ```
 docker exec -it <docker container_id> /bin/bash
 ```
 
+Danach muss das Archiv aufs verteilte Hadoop-Dateisystem (HDFS) hochgeladen und entpackt werden:
 
-Danach muss das Archiv aufs verteilte Hadoop-Dateisystem (HDFS) hochgeladen und entpackt  werden:
-
-__Docker__:
-```
-mkdir /hadoop_sprachvergleich /hadoop_sprachvergleich/all_languages
+__Docker:__
 ```
 
-```bash
-docker cp ~/Desktop/all_languages_unedited.zip <containerId>:/hadoop_sprachvergleich/
-```
-```
-unzip /hadoop_sprachvergleich/all_languages_unedited.zip -d /hadoop_sprachvergleich/all_languages
-```	
-
-Hier gab es Probleme mit der Umwandlung der kyrillischen Buchstaben. Ich nahm die kyrillischen Buchstaben und wandelte sie in lateinische um. (Bild)
-```bash
-mv \#U0420#U0443#U0441#U0441#U043a#U0438#U0439/ Russkyj
-mv \#U0423#U043a#U0440#U0430#U0457#U043d#U0441#U044c#U043a#U0430/ Ukrajinska
+$HADOOP_PREFIX/bin/hdfs dfs -put /hadoop_sv/textfiles /hadoop_sv/textfiles
 ```
 
+### JAR-File Kompilieren und in Container kopieren
 
-__Docker__:
+Da wir ein Maven-Projekt benutzen, muss nach der Implementierung das '.jar' file kompiliert, ggf. umbenannt und auf den Docker-Container kopiert werden. Dafür wurde das Skript ```create_and_copyJAR.sh``` geschrieben:
+
+1. A: Mit Hilfe von script
+
+__Local:__
 ```
-$HADOOP_PREFIX/bin/hdfs dfs -put /hadoop_sprachvergleich/all_languages /hadoop_sprachvergleich
+create_and_copyJAR.sh <containerId>
 ```
 
+1. B: Manuel: *Alternativ* kann die Maven .jar Manuel erzeugt und in den Container kopiert werden:
 
-Da wir ein Maven-Projekt benutzen, wird nach der Implementierung das '.jar' folgendermaßen erzeugt und auf das verteilte Hadoop-Dateisystem (HDFS) hochgeladen:
-
-__Local__:
+__Local:__
 ```
 cd <Project>
 mvn clean package
-mv target/hadoop_sprachvergleich-1.0-SNAPSHOT.jar target/hadoop_sprachvergleich.jar
-docker cp target/hadoop_sprachvergleich.jar <containerId>:/hadoop_sprachvergleich
+mv target/Hadoop_sv-1.0-SNAPSHOT.jar target/hadoop_sv.jar
+docker cp target/hadoop_sv.jar <containerId>:/hadoop_sv
 ```
 
-Um diesen Prozess zu automatisieren, wurde das Skript ```create&copyJar.sh``` geschrieben.
+2. In jedem Fall muss die .jar Datei danach vom Docker Container auf das HDFS System kopiert werden:
+
+__Docker:__
+```
+$HADOOP_PREFIX/bin/hdfs dfs -put /hadoop_sv/hadoop_sv.jar /hadoop_sv
+```
+
+### Hadoop-Job ausführen
 
 Um den Hadoop-Job zu starten wird folgender Befehl ausgeführt:
 
-__Docker__:```$HADOOP_PREFIX/bin/hadoop jar /hadoop_sprachvergleich/hadoop_sprachvergleich.jar Hadoop_Sprachvergleich /hadoop_sprachvergleich/all_languages /hadoop_sprachvergleich/output/```
+__Docker:__
+```
+$HADOOP_PREFIX/bin/hadoop jar /hadoop_sv/hadoop_sv.jar Hadoop_sv /hadoop_sv/textfiles /hadoop_sv/output/
+```
 
 
 ### useful commands:
-- interact with hdfs cluster: ```$HADOOP_PREFIX/bin/hdfs dfs -ls /```
-- remove outout: ```$HADOOP_PREFIX/bin/hdfs dfs -rm -r /hadoop_sprachvergleich/output```
-- show output: ```$HADOOP_PREFIX/bin/hdfs dfs -cat /hadoop_sprachvergleich/output/part-r-00000```
-- get files (HDFS to Docker): ```$HADOOP_PREFIX/bin/hdfs dfs -get /hadoop_sprachvergleich/output /hadoop_sprachvergleich/ ```
-- get files (Docker to Local): ```docker cp <containerId>:/hadoop_sprachvergleich/output ~/Desktop/```
+- interact with hdfs cluster: `$HADOOP_PREFIX/bin/hdfs dfs -ls /`
+- remove outout: `$HADOOP_PREFIX/bin/hdfs dfs -rm -r /hadoop_sv/output`
+- show output: `$HADOOP_PREFIX/bin/hdfs dfs -cat /hadoop_sv/output/part-r-00000`
+- get files (HDFS to Docker): `$HADOOP_PREFIX/bin/hdfs dfs -get /hadoop_sv/output /hadoop_sv/ `
+- get files (Docker to Local): `docker cp <containerId>:/hadoop_sv/output ~/Desktop/`
 
 ## Implementierung
 Derzeitiger Ansatz:

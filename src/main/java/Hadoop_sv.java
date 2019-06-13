@@ -18,7 +18,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Hadoop_Sprachvergleich {
+public class Hadoop_sv {
 
 
     /*
@@ -60,9 +60,9 @@ public class Hadoop_Sprachvergleich {
     private static void startJobToCountWordLengthForAFolder(Configuration conf, File languageFolderFile, String destinationPath) throws IOException, InterruptedException, ClassNotFoundException {
         String currentLanguage = languageFolderFile.getName();
         System.out.println("------------------------------------ DEBUG: Start counting words for language folder: '" + currentLanguage + "'. ------------------------------------");
-
+        
         Job job = Job.getInstance(conf, "Word length counting for language: ");
-        job.setJarByClass(Hadoop_Sprachvergleich.class);
+        job.setJarByClass(Hadoop_sv.class);
         job.setMapperClass(MyMapper.class);
         job.setCombinerClass(MyReducer.class);
         job.setReducerClass(MyReducer.class);

@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>de.berlin.htw</groupId>
-    <artifactId>hadoop_sprachvergleich</artifactId>
+    <artifactId>Hadoop_sv</artifactId>
     <version>1.0-SNAPSHOT</version>
 
 
