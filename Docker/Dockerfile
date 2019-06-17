@@ -5,7 +5,6 @@ RUN /etc/bootstrap.sh
 RUN mkdir /hadoop_sv /hadoop_sv/textfiles
 
 ADD textfiles_mini.zip hadoop_sv/
-ADD 
 
 RUN unzip /hadoop_sv/textfiles_mini.zip -d /hadoop_sv/textfiles
 

@@ -43,6 +43,7 @@ Aus diesen Gründen wurden sich gegen eine einfache Lokale installation und für
 
 Unser Dockerfile basiert auf dem Hadoop Docker Image von [sequenceiq](https://hub.docker.com/r/sequenceiq/hadoop-docker/), befindet sich in `./Docker/Dockerfile` und kann wie folt gebaut und ausgeführt werden
 
+__Local:__
 ```
 docker build -t sv .
 
@@ -51,6 +52,7 @@ docker run -it sv /etc/bootstrap.sh -bash
 
 Um den Docker Container zu testen kann das mitgelieferte Beispiel wie folgt ausgeführt und dessen Ergebnisse ausgelesen werden. 
 
+__Docker:__
 ```
 cd $HADOOP_PREFIX
 
@@ -71,20 +73,19 @@ Mittels IDE oder Konsole kann ein Maven-Projekt erstellt werden, in welchem die 
 In `./Docker/` befindet sich die Input datei (`textfiles.zip`) und eine kleinere Testdatei (`textfiles_mini.zip`) . Diese enthalten Beispiel-Text-Dateien, die analysiert werden sollen.
 Diese Dateien werden Automatisch durch das Dockerfile in den Docker Container kopiert. Um andere Dateien zu testen kann das Dockerfile bearbeitet werden. 
 
-Um sich mit der Docker-Instanz zu verbinden holt man sich die container-id mit `docker ps`.
-Danach kann man sich zum Container verbinden.
+Falls man sich noch nicht in bash des Containers befindet holt man sich die container-id mit `docker ps`, und kopiert sie in folgenden Befehl:
 
 __Local:__
 ```
 docker exec -it <docker container_id> /bin/bash
 ```
 
-Danach muss das Archiv aufs verteilte Hadoop-Dateisystem (HDFS) hochgeladen und entpackt werden:
+Danach kann das Archiv aufs verteilte Hadoop-Dateisystem (HDFS) hochgeladen und entpackt werden:
 
 __Docker:__
 ```
-$HADOOP_PREFIX/bin/hdfs dfs -mkdir /hadoop_sv /hadoop_sv/textfiles/
-$HADOOP_PREFIX/bin/hdfs dfs -put /hadoop_sv/textfiles /hadoop_sv/textfiles
+$HADOOP_PREFIX/bin/hdfs dfs -mkdir /hadoop_sv
+$HADOOP_PREFIX/bin/hdfs dfs -put /hadoop_sv/textfiles /hadoop_sv/
 ```
 
 ### JAR-File Kompilieren und in Container kopieren
@@ -102,7 +103,7 @@ create_and_copyJAR.sh <containerId>
 
 __Local:__
 ```
-cd <Project>
+cd hadoop_sv
 mvn clean package
 mv target/Hadoop_sv-1.0-SNAPSHOT.jar target/hadoop_sv.jar
 docker cp target/hadoop_sv.jar <containerId>:/hadoop_sv
@@ -129,7 +130,7 @@ $HADOOP_PREFIX/bin/hadoop jar /hadoop_sv/hadoop_sv.jar Hadoop_sv /hadoop_sv/text
 - interact with hdfs cluster: `$HADOOP_PREFIX/bin/hdfs dfs -ls /`
 - remove outout: `$HADOOP_PREFIX/bin/hdfs dfs -rm -r /hadoop_sv/output`
 - show output: `$HADOOP_PREFIX/bin/hdfs dfs -cat /hadoop_sv/output/part-r-00000`
-- get files (HDFS to Docker): `$HADOOP_PREFIX/bin/hdfs dfs -get /hadoop_sv/output /hadoop_sv/ `
+- get files (HDFS to Docker): `$HADOOP_PREFIX/bin/hdfs dfs -get /hadoop_sv/output /hadoop_sv/`
 - get files (Docker to Local): `docker cp <containerId>:/hadoop_sv/output ~/Desktop/`
 
 ## Implementierung

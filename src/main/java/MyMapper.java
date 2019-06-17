@@ -40,7 +40,7 @@ public class MyMapper extends Mapper<LongWritable, Text, LongWritable, Text> {
 
             if (hit.length() > maxLength) {
                 maxLength = hit.length();
-                longestWord = word.toString();
+                longestWord = hit;
             }
         }
     }
