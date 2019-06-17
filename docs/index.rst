@@ -3,18 +3,24 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Hadoop Sprachvergleich's documentation!
-==================================================
+Wilkommen zur Hadoop Sprachvergleich dokumentation!
+===================================================
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
+   
+   tasks
+   installation
+   recompilation
+   performace
+   usefulCommands
 
 
 
-Indices and tables
-==================
 
-* :ref:`genindex`
-* :ref:`modindex`
+
+
+
+
 * :ref:`search`
