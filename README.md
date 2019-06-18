@@ -50,7 +50,7 @@ Unser Dockerfile basiert auf dem Hadoop Docker Image von [sequenceiq](https://hu
 ```
 docker build -t sv .
 
-docker run -it sv /etc/bootstrap.sh -bash
+docker run -it sv /etc/bootstrap.sh -bash --name docker_hadoop
 ```
 
 Um den Docker Container zu testen kann das mitgelieferte Beispiel wie folgt ausgeführt und dessen Ergebnisse ausgelesen werden.
@@ -128,17 +128,17 @@ $HADOOP_PREFIX/bin/hdfs dfs -put /hadoop_sv/hadoop_sv.jar /hadoop_sv
 
 ### Hadoop-Job ausführen
 
-Um den Hadoop-Job zu starten wird folgender Befehl ausgeführt:
+Um den Hadoop-Job zu starten wird folgender Befehl ausgeführt (beim Starten des Docker-Containers sollte auch ein Alias angelegt worden sein. Damit lässt sich der lange Befehl auch mit ```runhadoop``` ausführen.):
 
 **Docker:**
 
-```
-$HADOOP_PREFIX/bin/hadoop jar /hadoop_sv/hadoop_sv.jar Hadoop_sv /hadoop_sv/textfiles /hadoop_sv/output/
+``` 
+$HADOOP_PREFIX/bin/hadoop jar /hadoop_sv/hadoop_sv.jar de.berlin.htw.Hadoop_sv /hadoop_sv/textfiles /hadoop_sv/output/
 ```
 
 ### useful commands:
 
-- interact with hdfs cluster: `$HADOOP_PREFIX/bin/hdfs dfs -ls /`
+- interact with hdfs cluster: `$HADOOP_PREFIX/bin/hdfs dfs -ls /hadoop_sv/results`
 - remove outout: `$HADOOP_PREFIX/bin/hdfs dfs -rm -r /hadoop_sv/output`
 - show output: `$HADOOP_PREFIX/bin/hdfs dfs -cat /hadoop_sv/output/part-r-00000`
 - get files (HDFS to Docker): `$HADOOP_PREFIX/bin/hdfs dfs -get /hadoop_sv/output /hadoop_sv/`
@@ -160,7 +160,7 @@ Derzeitige Probleme:
 - two languages fail to unzip (picture) -> renamed
 - use regex for word splitting, currently getting a lot of combines words
 
-## TODO Bei neukompellierung:
+## TODO Bei neukompilierung:
 
 1. Alte Jar löschen:
 
@@ -173,7 +173,7 @@ rm /hadoop_sv/hadoop_sv.jar
 $HADOOP_PREFIX/bin/hdfs dfs -rm /hadoop_sv/hadoop_sv.jar
 ```
 
-2. Neue Datei kompellieren und aufs System Kopieren
+2. Neue Datei kompilieren und aufs System Kopieren
 
 **Local:**
 

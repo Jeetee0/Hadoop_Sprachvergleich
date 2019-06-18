@@ -41,7 +41,7 @@ ausgeführt werden:
 ::
 
     docker build -t sv .
-    docker run -it sv /etc/bootstrap.sh -bash
+    docker run -it sv /etc/bootstrap.sh -bash --name docker_hadoop
 
 Um den Docker Container zu **testen** kann das mitgelieferte Beispiel wie
  ausgeführt und dessen Ergebnisse ausgelesen werden.
@@ -82,7 +82,7 @@ die container-id mit ``docker ps``, und kopiert sie in folgenden Befehl:
 
     docker exec -it <docker container_id> /bin/bash
 
-Danach kann das Archiv aufs verteilte Hadoop-Dateisystem (HDFS)
+Danach kann das Archiv auf das verteilte Hadoop-Dateisystem (HDFS)
 hochgeladen werden:
 
 **Docker:**
@@ -138,7 +138,7 @@ Um den Hadoop-Job zu starten wird folgender Befehl ausgeführt:
 
 ::
 
-    $HADOOP_PREFIX/bin/hadoop jar /hadoop_sv/hadoop_sv.jar Hadoop_sv /hadoop_sv/textfiles /hadoop_sv/output/
+    $HADOOP_PREFIX/bin/hadoop jar /hadoop_sv/hadoop_sv.jar de.berlin.htw.Hadoop_sv /hadoop_sv/textfiles /hadoop_sv/output/
 
 
 Ergebnisse sichten

@@ -46,4 +46,14 @@ Derzeitige Probleme:
    workaround
 -  two languages fail to unzip (picture) -> renamed
 -  use regex for word splitting, currently getting a lot of combines
-   words
+   words -> implemented different mapper
+
+
+
+- aggregationMapper enthält keine information über "path". daher keine zuordnung zur sprache möglich... (bild)
+-
+
+Doku:
+
+- zwischenergebnisse unter: /hadoop_sv/output
+- ergebnisse unter: /hadoop_sv/results
