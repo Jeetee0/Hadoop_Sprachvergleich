@@ -8,15 +8,14 @@ Wilkommen zur Hadoop Sprachvergleich dokumentation!
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Inhalt:
    
    tasks
    installation
    recompilation
-   performace
+   performance
    usefulCommands
-
-
+   implementation
 
 
 

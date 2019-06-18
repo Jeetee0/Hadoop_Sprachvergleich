@@ -1,13 +1,13 @@
 Nützliche Befehle
 =================
 
-interact with hdfs cluster: 
+Mit HDFS cluster interagieren: 
    ``$HADOOP_PREFIX/bin/hdfs dfs -ls /``
 
-remove outout:
+outout löschen:
    ``$HADOOP_PREFIX/bin/hdfs dfs -rm -r /hadoop_sv/output``
 
-show output:
+output anzeigen
    ``$HADOOP_PREFIX/bin/hdfs dfs -cat /hadoop_sv/output/part-r-00000``
 
 get files (HDFS to Docker):

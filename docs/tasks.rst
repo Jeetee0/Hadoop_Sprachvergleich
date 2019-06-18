@@ -1,5 +1,5 @@
-Aufgabe
-=======
+Aufgabenstellung
+================
 
 
 Wir haben uns die Aufgabe 11 ausgesucht. Dazu gehören drei
@@ -9,10 +9,10 @@ Hauptbestandteile
 -  Sortieren der Wörter der Länge nach (pro Sprache)
 -  Zusammenfassen der Ergebnisse
 
-Dabei soll die Form: "Sprache – Längstes Wort – Länge“
+Dabei sollen die Ergebnisse in einer Datei mit der Form: "Sprache – Längstes Wort – Länge“ zusammengefasst werden.
 
-Anforderungen
-^^^^^^^^^^^^^
+Dokumentationsanforderungen
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 10+ Seiten und mindestens die folgenden Bestandteile enthalten:
 

@@ -12,68 +12,63 @@ konnten die Probleme nicht vollständig beseitigen.
 
 Auf dem Mac entstanden viele Fehler durch Berechtigungsprobleme beim SSH
 Zugriff auf localhost. Zu einem Zeitpunkt funktionierte der
-Hadoop-Cluster teilweise. Wir konnten jeweils einmal die Seiten: oder
-aufrufen. Leider ging es danach wieder nicht. Es gibt wohl öfter
-Probleme beim Starten und Beenden von YARN.
+Hadoop-Cluster teilweise. Es gibt wohl öfter Probleme beim 
+Starten und Beenden von YARN.
 
 Auf Linux konnte Hadoop zwar vermeintlich installiert werden, die
-Beispiele erreichen beim Testen dann jedoch nicht alle Nodes.
+Beispiel-JAR's erreichen beim Testen dann jedoch nicht alle Nodes.
 
 Aus diesen Gründen wurden sich gegen eine einfache Lokale installation
 und für eine Containerisierungslösung entschieden. So können auch Sie
 schneller und verlässlicher Testen.
 
-Hadoop mit Docker
-^^^^^^^^^^^^^^^^^
+Quickstart
+^^^^^^^^^^
 
-``Note:`` In dieser Dokumentation markieren wir jeden
-Komandozeilenausschnitt mit ``Local`` oder ``Docker`` um zu
+
+**Note:** In dieser Dokumentation markieren wir jeden
+Komandozeilenausschnitt mit **Local** oder **Docker** um zu
 verdeutlichen ob die Befehle für das Hostsystem oder innerhalb des
 Docker Containers ausgeführt werden.
 
 Unser Dockerfile basiert auf dem Hadoop Docker Image von
 `sequenceiq <https://hub.docker.com/r/sequenceiq/hadoop-docker/>`__,
-befindet sich in ``./Docker/Dockerfile`` und kann wie folt gebaut und
-ausgeführt werden
+befindet sich in ``./Docker/Dockerfile`` und kann wie folgt gebaut und
+ausgeführt werden:
 
 **Local:**
 
 ::
 
     docker build -t sv .
-
     docker run -it sv /etc/bootstrap.sh -bash
 
-Um den Docker Container zu testen kann das mitgelieferte Beispiel wie
-folgt ausgeführt und dessen Ergebnisse ausgelesen werden.
+Um den Docker Container zu **testen** kann das mitgelieferte Beispiel wie
+ ausgeführt und dessen Ergebnisse ausgelesen werden.
 
 **Docker:**
 
 ::
 
     cd $HADOOP_PREFIX
-
     bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.0.jar grep input output 'dfs[a-z.]+'
-
     bin/hdfs dfs -cat output/*
 
-Entwicklerumgebung
-~~~~~~~~~~~~~~~~~~
 
-Mittels IDE oder Konsole kann ein Maven-Projekt erstellt werden, in
-welchem die Dependencies ``hadoop-core`` und
-``hadoop-mapreduce-client-core`` eingebunden werden müssen.
 
---------------
-
-Vorbereitung zur Ausführung:
-----------------------------
+Ausführung vorbereiten
+----------------------
 
 Resourcen auf Container bringen
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+Die Textdateien müssen in das DFS Dateisystem kopiert werden. Dabei sind folgende Schritte nötig:
+
+- Hostmaschine ➡️ Docker (dieser Schritt wird automatisch durch das Dockerfile ausgeführt)
+- Docker ➡️ DFS (dieser Schritt muss wie unten beschrieben ausgeführt werden)
+
 In ``./Docker/`` befindet sich die Input datei (``textfiles.zip``) und
-eine kleinere Testdatei (``textfiles_mini.zip``) . Diese enthalten
+eine kleinere Testdatei (``textfiles_mini.zip``). Diese enthalten
 Beispiel-Text-Dateien, die analysiert werden sollen. Diese Dateien
 werden Automatisch durch das Dockerfile in den Docker Container kopiert.
 Um andere Dateien zu testen kann das Dockerfile bearbeitet werden.
@@ -88,7 +83,7 @@ die container-id mit ``docker ps``, und kopiert sie in folgenden Befehl:
     docker exec -it <docker container_id> /bin/bash
 
 Danach kann das Archiv aufs verteilte Hadoop-Dateisystem (HDFS)
-hochgeladen und entpackt werden:
+hochgeladen werden:
 
 **Docker:**
 
@@ -105,7 +100,7 @@ Da wir ein Maven-Projekt benutzen, muss nach der Implementierung das
 kopiert werden. Dafür wurde das Skript ``create_and_copyJAR.sh``
 geschrieben:
 
-1. A: Mit Hilfe von script
+1.a: Mit Hilfe von script
 
 **Local:**
 
@@ -113,7 +108,7 @@ geschrieben:
 
     create_and_copyJAR.sh <containerId>
 
-1. B: Manuel: *Alternativ* kann die Maven .jar Manuel erzeugt und in den
+1.b: Manuel: *Alternativ* kann die Maven .jar Manuel erzeugt und in den
    Container kopiert werden:
 
 **Local:**
@@ -135,7 +130,7 @@ geschrieben:
     $HADOOP_PREFIX/bin/hdfs dfs -put /hadoop_sv/hadoop_sv.jar /hadoop_sv
 
 Hadoop-Job ausführen
-~~~~~~~~~~~~~~~~~~~~
+--------------------
 
 Um den Hadoop-Job zu starten wird folgender Befehl ausgeführt:
 
@@ -144,3 +139,27 @@ Um den Hadoop-Job zu starten wird folgender Befehl ausgeführt:
 ::
 
     $HADOOP_PREFIX/bin/hadoop jar /hadoop_sv/hadoop_sv.jar Hadoop_sv /hadoop_sv/textfiles /hadoop_sv/output/
+
+
+Ergebnisse sichten
+------------------
+
+Die Ergebnisse liegen jetzt in ``hadoop_sv/output`` und können direkt angezeigt werden:
+
+::
+    
+    $HADOOP_PREFIX/bin/hdfs dfs -cat /hadoop_sv/output/part-r-00000
+
+Oder die Dateien können in zwei Schritten auf das Hostsystem kopiert werden:
+
+1. HDFS ➡️ Docker
+
+::
+
+   $HADOOP_PREFIX/bin/hdfs dfs -get /hadoop_sv/output /hadoop_sv/
+
+2. Docker ️➡️ ️Hostmaschine
+
+::
+
+   docker cp <containerId>:/hadoop_sv/output ~/Desktop/

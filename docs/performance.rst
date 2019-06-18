@@ -1,9 +1,23 @@
 Performance der Mapper Funktionen
 =================================
 
-Wir haben zwei verschiedene Mapper implementiert. Einmal mit einem Replace-Algorith mus
+Für das heraussuchen der Längsten Wörter haben wir zwei verschiedene Mapper implementiert und deren Performance verglichen. 
 
-Runtime für \*small.zip:
+Replace
+~~~~~~~
+
+Der Replace Algorithmus  schaut sich jedes Wort an, entfernt (die meisten) unerwünschten Symbole und prüft ob bereits ein längeres Wort gefunden wurde. 
+
+RegEx
+~~~~~
+
+Durch den RegEx Algorithmus werden alle Wörter mithilfe des Regulären Ausdrucks ``\w+`` gesucht und auf Länge überprüft.
+
+
+Ergebnisse
+~~~~~~~~~~
+
+Die Laufzeit der Algorithmen wurde mit den Testdaten überprüft. Es ist ersichtlich dass der RegexMapper wenige Sekunden schneller ist. Darüber hinaus liefert er allerdings auch sauberere Ergebnisse, da er auch Bindestriche filtert. Deswegen haben wir uns für den RegexMapper in der Finalen Implementierung entschieden
 
 +-------------+-----------------+---------------+
 | JOB No.     | replaceMapper   | regexMapper   |
@@ -24,6 +38,6 @@ Runtime für \*small.zip:
 +-------------+-----------------+---------------+
 | 8           | 25s             | 25s           |
 +-------------+-----------------+---------------+
-| ``Total``   | ``213s``        | ``209s``      |
+| **Total**   | **213s**        | **209s**      |
 +-------------+-----------------+---------------+
 
