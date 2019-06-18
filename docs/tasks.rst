@@ -2,34 +2,33 @@ Aufgabenstellung
 ================
 
 
-Wir haben uns die Aufgabe 11 ausgesucht. Dazu gehören drei
-Hauptbestandteile
+Wir haben uns die Aufgabe 11 ausgesucht. Ziel ist es, aus einer Eingabe von Texten die längsten Wörter herauszusuchen.
 
--  Zählen der Wörterlänge (pro Sprache)
--  Sortieren der Wörter der Länge nach (pro Sprache)
--  Zusammenfassen der Ergebnisse
+Zum Schluss sollen die Ergebnisse in folgender Form zusammengefasst werden:
 
-Dabei sollen die Ergebnisse in einer Datei mit der Form: "Sprache – Längstes Wort – Länge“ zusammengefasst werden.
+::
 
-Dokumentationsanforderungen
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    "Sprache – Längstes Wort – Länge“
 
-10+ Seiten und mindestens die folgenden Bestandteile enthalten:
+Dabei sollen die längsten Wörter oben stehen.
 
--  Kurze Beschreibung und Erklärung der Aufgabe
--  Detaillierte Lösungsbeschreibung
--  Code-Fragmente mit einer Textbeschreibung
--  Screenshots für die Ergebnisse und/oder Zwischenergebnisse
--  Ausführliche Tests der Anwendung
--  Tabellen, Graphen und Diagramme für die Leistung und vergleichende
-   Laufzeit
--  Kurzes Fazit
+Lösungsansatz
+^^^^^^^^^^^^^
 
+Hadoop stellt vorrangig vier Dinge bereit:
 
-Implementierung
-^^^^^^^^^^^^^^^
+    1. Hadoop distributed file system (HDFS) - ein Verteiltes Dateisystem
+    2. Hadoop MapReduce - ein System für parallele Datenverarbeitung
+    3. Hadoop YARN - ein Framework um zur Job-Ablaufplanung (scheduling) und Cluster Ressourcen Management
+    4. Hadoop Common - alle Werkzeuge die das Kommunizieren dieser drei untereinander ermöglichen
 
-Derzeitiger Ansatz:
+Wir arbeiten dabei besonders eng mit HDFS und MapReduce zusammen.
+
+Mittels Docker starten wir verschiedene Nodes. Auf diesen können wir durch Hadoop HDFS automatisch alle Textdateien (.txt-Format) verteilt speichern. Außerdem können Jobs ausgeführt werden, um die Dateien zu verarbeiten.
+
+Wir starten pro Sprache einen Job der den MapReduce Prozess ausführt. Dieser findet für eine Sprache das Längste Wort und speichert dieses in einer Part-Datei.
+
+[TODO: Oskar, vielleicht kannst du das bessser erklären?)
 
 -  pro Sprache einen Job, der MapReduce-Prozess ausführt -> findet
    längstes Wort pro Sprache
@@ -52,6 +51,21 @@ Derzeitige Probleme:
 
 - aggregationMapper enthält keine information über "path". daher keine zuordnung zur sprache möglich... (bild)
 -
+
+Dokumentationsanforderungen
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+10+ Seiten und mindestens die folgenden Bestandteile enthalten:
+
+-  Kurze Beschreibung und Erklärung der Aufgabe
+-  Detaillierte Lösungsbeschreibung
+-  Code-Fragmente mit einer Textbeschreibung
+-  Screenshots für die Ergebnisse und/oder Zwischenergebnisse
+-  Ausführliche Tests der Anwendung
+-  Tabellen, Graphen und Diagramme für die Leistung und vergleichende
+   Laufzeit
+-  Kurzes Fazit
+
 
 Doku:
 

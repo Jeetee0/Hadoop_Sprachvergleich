@@ -17,7 +17,7 @@ public class RegexMapper extends Mapper<LongWritable, Text, LongWritable, Text> 
     private String longestWord = "";
 
     protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
-        Matcher m = Pattern.compile("\\w+").matcher(value.toString());
+        Matcher m = Pattern.compile("\\w+", Pattern.UNICODE_CHARACTER_CLASS).matcher(value.toString());
 
         while (m.find()) {
             String hit = m.group(0);

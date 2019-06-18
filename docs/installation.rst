@@ -154,11 +154,15 @@ Oder die Dateien können in zwei Schritten auf das Hostsystem kopiert werden:
 
 1. HDFS ➡️ Docker
 
+**Docker:**
+
 ::
 
    $HADOOP_PREFIX/bin/hdfs dfs -get /hadoop_sv/output /hadoop_sv/
 
 2. Docker ️➡️ ️Hostmaschine
+
+**Local:**
 
 ::
 
