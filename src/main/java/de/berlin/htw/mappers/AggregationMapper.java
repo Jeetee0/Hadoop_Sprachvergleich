@@ -1,33 +1,42 @@
 package de.berlin.htw.mappers;
 
-import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.hadoop.mapreduce.Reducer;
 
-import java.util.regex.*;
 import java.io.IOException;
 import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-public class RegexMapper extends Mapper<LongWritable, Text, LongWritable, Text> {
+public class AggregationMapper extends Mapper<LongWritable, Text, Text, Text> {
 
-    private long maxLength = 0;
-    private String longestWord = "";
+    String language = "";
+    int max = 0;
+    String longestWord = "";
 
     protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
-        Matcher m = Pattern.compile("\\w+").matcher(value.toString());
+        String lines[] = value.toString().split("\\r?\\n");
 
-        while (m.find()) {
-            String hit = m.group(0);
+        for (String line : lines) {
+            String number = line.split("\\t")[0];
+            int length = Integer.parseInt(number);
 
-            if (hit.length() > maxLength) {
-                maxLength = hit.length();
-                longestWord = hit;
+            if (length > max) {
+                max = length;
+                longestWord = line;
             }
         }
     }
 
+    @Override
+    public void setup(Mapper.Context context) throws IOException {
+        language = context.toString();
+    }
+
     protected void cleanup(Context context) throws IOException, InterruptedException {
-        context.write(new LongWritable(maxLength), new Text(longestWord));
+        context.write(new Text(language), new Text(longestWord));
     }
 }
