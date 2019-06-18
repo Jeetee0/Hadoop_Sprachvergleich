@@ -38,7 +38,7 @@ public class Hadoop_sv {
         String rootPath = args[0];
         String destinationPath = args[1];
         File[] languageDirectories = new File(rootPath).listFiles();
-        int languageProgress = 1;
+        int languageProgress = 0;
         int languages = languageDirectories.length;
 
 
