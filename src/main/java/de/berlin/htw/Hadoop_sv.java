@@ -41,6 +41,7 @@ public class Hadoop_sv {
         // <rootPath>/<languageDirectories>/TXT/<txt-files>
         String rootPath = args[0];
         String destinationPath = args[1];
+        String resultPath = args[2];
         File[] languageDirectories = new File(rootPath).listFiles();
         int languageProgress = 0;
         int languages = languageDirectories.length;
@@ -64,7 +65,6 @@ public class Hadoop_sv {
 
 
         // use output of first jobs and save to resultPath
-        String resultPath = "/hadoop_sv/results/";
         debugMessage(String.format("Aggregating results to %s", resultPath), "DEBUG");
 
         //data is located at: /hadoop_sprachvergleich/output/<language>/part-r-00000

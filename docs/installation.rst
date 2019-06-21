@@ -138,7 +138,7 @@ Um den Hadoop-Job zu starten wird folgender Befehl ausgeführt:
 
 ::
 
-    $HADOOP_PREFIX/bin/hadoop jar /hadoop_sv/hadoop_sv.jar de.berlin.htw.Hadoop_sv /hadoop_sv/textfiles /hadoop_sv/output/
+    $HADOOP_PREFIX/bin/hadoop jar /hadoop_sv/hadoop_sv.jar de.berlin.htw.Hadoop_sv /hadoop_sv/textfiles /hadoop_sv/output/ /hadoop_sv/results/
 
 
 Ergebnisse sichten

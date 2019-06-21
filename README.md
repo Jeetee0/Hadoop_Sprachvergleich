@@ -4,13 +4,15 @@
 
 ### Aufgabe
 
-Wir haben uns die Aufgabe 11 ausgesucht. Dazu gehören drei Hauptbestandteile
+Dies ist eine Aufgabe für das Studium an der HTW Berlin im Master Angewantde Informatik. 
+Im Kurs Programmierkonzepte & Algorithmen müssen wir im Semester eine Belegaufgabe bearbeiten.
+Wir haben uns die Aufgabe 11 ausgesucht. Dazu gehören drei Hauptbestandteile:
 
 - Zählen der Wörterlänge (pro Sprache)
 - Sortieren der Wörter der Länge nach (pro Sprache)
 - Zusammenfassen der Ergebnisse
 
-Dabei soll die Form: "Sprache – Längstes Wort – Länge“
+Dabei soll die Form: "Sprache – Längstes Wort – Länge“ generiert werden.
 
 
 ### Dokumentation
@@ -31,19 +33,15 @@ Dabei soll die Form: "Sprache – Längstes Wort – Länge“
 
 ### Installation:
 
-Das Aufsetzen von Hadoop gestaltete sich als sehr schwierig. Sowohl auf Windows, als auch auf Linux und Mac gab es unterschiedliche Probleme. Verschiedene Anleitungen & Hadoop-Versionen wurden ausprobiert. Auch [Stackoverflow](https://stackoverflow.com/questions/14932794/problems-in-setting-hadoop-on-mac-os-x-10-8) [und](https://medium.com/@jayden.chua/installing-hadoop-on-macos-a334ab45bb3) [andere](https://gist.github.com/christine-le/2a5dd75c9e0a2f87bc1edda42c9b8206) [Foren](https://isaacchanghau.github.io/post/install_hadoop_mac/) konnten die Probleme nicht vollständig beseitigen.
-
-Auf dem Mac entstanden viele Fehler durch Berechtigungsprobleme beim SSH Zugriff auf localhost. Zu einem Zeitpunkt funktionierte der Hadoop-Cluster teilweise. Wir konnten jeweils einmal die Seiten: <localhost:50070> oder <localhost:8088> aufrufen. Leider ging es danach wieder nicht. Es gibt wohl öfter Probleme beim Starten und Beenden von YARN.
-
-Auf Linux konnte Hadoop zwar vermeintlich installiert werden, die Beispiele erreichen beim Testen dann jedoch nicht alle Nodes.
-
-Aus diesen Gründen wurden sich gegen eine einfache Lokale installation und für eine Containerisierungslösung entschieden. So können auch Sie schneller und verlässlicher Testen.
+Da die Installation viele Probleme bereitete, nahmen wir die Lösung Hadoop in Docker zu nutzen und auf ein vorhandenes Image zurückzugreifen.
 
 #### Hadoop mit Docker
 
-`Note:` In dieser Dokumentation markieren wir jeden Komandozeilenausschnitt mit `Local` oder `Docker` um zu verdeutlichen ob die Befehle für das Hostsystem oder innerhalb des Docker Containers ausgeführt werden.
 
-Unser Dockerfile basiert auf dem Hadoop Docker Image von [sequenceiq](https://hub.docker.com/r/sequenceiq/hadoop-docker/), befindet sich in `./Docker/Dockerfile` und kann wie folt gebaut und ausgeführt werden
+
+`Note:` In dieser Dokumentation markieren wir jeden Komandozeilenausschnitt mit `Local` oder `Docker` um zu verdeutlichen, ob die Befehle für das Hostsystem oder innerhalb des Docker Containers ausgeführt werden.
+
+Unser Dockerfile basiert auf dem Hadoop Docker Image von [sequenceiq](https://hub.docker.com/r/sequenceiq/hadoop-docker/), befindet sich in `./Docker/Dockerfile` und kann wie folgt gebaut und ausgeführt werden:
 
 **Local:**
 
@@ -53,40 +51,24 @@ docker build -t sv .
 docker run -it sv /etc/bootstrap.sh -bash --name docker_hadoop
 ```
 
-Um den Docker Container zu testen kann das mitgelieferte Beispiel wie folgt ausgeführt und dessen Ergebnisse ausgelesen werden.
-
-**Docker:**
-
-```
-cd $HADOOP_PREFIX
-
-bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.0.jar grep input output 'dfs[a-z.]+'
-
-bin/hdfs dfs -cat output/*
-```
-
-### Entwicklerumgebung
-
-Mittels IDE oder Konsole kann ein Maven-Projekt erstellt werden, in welchem die Dependencies `hadoop-core` und `hadoop-mapreduce-client-core` eingebunden werden müssen.
-
 ---
 
 ## Vorbereitung zur Ausführung:
 
-### Resourcen auf Container bringen
+### Resourcen bereitstellen
 
 In `./Docker/` befindet sich die Input datei (`textfiles.zip`) und eine kleinere Testdatei (`textfiles_mini.zip`) . Diese enthalten Beispiel-Text-Dateien, die analysiert werden sollen.
 Diese Dateien werden Automatisch durch das Dockerfile in den Docker Container kopiert. Um andere Dateien zu testen kann das Dockerfile bearbeitet werden.
 
-Falls man sich noch nicht in bash des Containers befindet holt man sich die container-id mit `docker ps`, und kopiert sie in folgenden Befehl:
+Falls man sich noch nicht in der Konsole des Containers befindet, kann man die container-id mit `docker ps` herausfinden, und benutzt sie im folgenden Befehl:
 
 **Local:**
 
 ```
-docker exec -it <docker container_id> /bin/bash
+docker exec -it <container_id> /bin/bash
 ```
 
-Danach kann das Archiv aufs verteilte Hadoop-Dateisystem (HDFS) hochgeladen und entpackt werden:
+Danach kann das Archiv auf das verteilte Hadoop-Dateisystem (HDFS) hochgeladen und entpackt werden.
 
 **Docker:**
 
@@ -94,12 +76,13 @@ Danach kann das Archiv aufs verteilte Hadoop-Dateisystem (HDFS) hochgeladen und 
 $HADOOP_PREFIX/bin/hdfs dfs -mkdir /hadoop_sv
 $HADOOP_PREFIX/bin/hdfs dfs -put /hadoop_sv/textfiles /hadoop_sv/
 ```
+Alternativ kann zuerst die "jar"-Datei in den Container kopiert (nächster Schritt) und dann das Skript 'createEnvironment.sh' im Container ausgeführt werden, um die Umgebung einzurichten.
 
-### JAR-File Kompilieren und in Container kopieren
+### JAR-File kompilieren und in Container kopieren
 
 Da wir ein Maven-Projekt benutzen, muss nach der Implementierung das '.jar' file kompiliert, ggf. umbenannt und auf den Docker-Container kopiert werden. Dafür wurde das Skript `create_and_copyJAR.sh` geschrieben:
 
-1. A: Mit Hilfe von script
+1. A - mithilfe eines Skriptes:
 
 **Local:**
 
@@ -107,18 +90,18 @@ Da wir ein Maven-Projekt benutzen, muss nach der Implementierung das '.jar' file
 create_and_copyJAR.sh <containerId>
 ```
 
-1. B: Manuel: _Alternativ_ kann die Maven .jar Manuel erzeugt und in den Container kopiert werden:
+1. B - manuell: _Alternativ_ kann die "jar"-Datei manuell erzeugt und in den Container kopiert werden:
 
 **Local:**
 
 ```
-cd hadoop_sv
+cd Hadoop_Sprachvergleich
 mvn clean package
 mv target/Hadoop_sv-1.0-SNAPSHOT.jar target/hadoop_sv.jar
 docker cp target/hadoop_sv.jar <containerId>:/hadoop_sv
 ```
 
-2. In jedem Fall muss die .jar Datei danach vom Docker Container auf das HDFS System kopiert werden:
+2. In jedem Fall muss die "jar"-Datei danach vom Docker-Container auf das HDFS kopiert werden:
 
 **Docker:**
 
@@ -133,10 +116,10 @@ Um den Hadoop-Job zu starten wird folgender Befehl ausgeführt (beim Starten des
 **Docker:**
 
 ``` 
-$HADOOP_PREFIX/bin/hadoop jar /hadoop_sv/hadoop_sv.jar de.berlin.htw.Hadoop_sv /hadoop_sv/textfiles /hadoop_sv/output/
+$HADOOP_PREFIX/bin/hadoop jar /hadoop_sv/hadoop_sv.jar de.berlin.htw.Hadoop_sv /hadoop_sv/textfiles /hadoop_sv/output/ /hadoop_sv/results/
 ```
 
-### useful commands:
+### weitere nützliche Befehle:
 
 - interact with hdfs cluster: `$HADOOP_PREFIX/bin/hdfs dfs -ls /hadoop_sv/results`
 - remove outout: `$HADOOP_PREFIX/bin/hdfs dfs -rm -r /hadoop_sv/output`
@@ -160,49 +143,8 @@ Derzeitige Probleme:
 - two languages fail to unzip (picture) -> renamed
 - use regex for word splitting, currently getting a lot of combines words
 
-## TODO Bei neukompilierung:
 
-1. Alte Jar löschen:
 
-A. Automatisch: Run `delete_jars.sh`
-B. Manuell
-**Docker:**
-
-```
-rm /hadoop_sv/hadoop_sv.jar
-$HADOOP_PREFIX/bin/hdfs dfs -rm /hadoop_sv/hadoop_sv.jar
-```
-
-2. Neue Datei kompilieren und aufs System Kopieren
-
-**Local:**
-
-```
-mvn clean package
-mv target/Hadoop_sv-1.0-SNAPSHOT.jar target/hadoop_sv.jar
-docker cp target/hadoop_sv.jar <containerId>:/hadoop_sv
-```
-
-3. Ausführen:
-
-**Docker:**
-
-```
-$HADOOP_PREFIX/bin/hadoop jar /hadoop_sv/hadoop_sv.jar Hadoop_sv /hadoop_sv/textfiles /hadoop_sv/output/
-```
-
-## Statistiken
-
-Runtime für \*small.zip:
-
-| JOB No. | replaceMapper | regexMapper |
-| ------- | ------------: | ----------: |
-| 1       |           20s |         19s |
-| 2       |           27s |         26s |
-| 3       |           21s |         21s |
-| 4       |           28s |         27s |
-| 5       |           25s |         25s |
-| 6       |           25s |         24s |
-| 7       |           37s |         37s |
-| 8       |           25s |         25s |
-| `Total` |        `213s` |      `209s` |
+todos:
+- tests schreiben
+- skript in docker, dass test automatisch ausführt (testzip kopieren, unzippen, hadoop starten, vergleichen)
