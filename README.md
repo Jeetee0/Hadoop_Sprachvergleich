@@ -55,10 +55,28 @@ docker run -it sv /etc/bootstrap.sh -bash --name docker_hadoop
 
 ## Vorbereitung zur Ausführung:
 
+### Quick & Dirty commands on Linux:
+
+**Local:**
+
+```
+docker ps
+cd <Project>
+./createAndCopyJAR.sh <container_id>
+docker exec -it <container_id> /bin/bash
+```
+
+**Docker:**
+```
+./createEnvironment.sh
+runhadoop
+```
+
+
 ### Resourcen bereitstellen
 
 In `./Docker/` befindet sich die Input datei (`textfiles.zip`) und eine kleinere Testdatei (`textfiles_mini.zip`) . Diese enthalten Beispiel-Text-Dateien, die analysiert werden sollen.
-Diese Dateien werden Automatisch durch das Dockerfile in den Docker Container kopiert. Um andere Dateien zu testen kann das Dockerfile bearbeitet werden.
+Diese Dateien werden automatisch durch das Dockerfile in den Docker Container kopiert. Um andere Dateien zu testen kann das Dockerfile bearbeitet werden.
 
 Falls man sich noch nicht in der Konsole des Containers befindet, kann man die container-id mit `docker ps` herausfinden, und benutzt sie im folgenden Befehl:
 
@@ -80,7 +98,7 @@ Alternativ kann zuerst die "jar"-Datei in den Container kopiert (nächster Schri
 
 ### JAR-File kompilieren und in Container kopieren
 
-Da wir ein Maven-Projekt benutzen, muss nach der Implementierung das '.jar' file kompiliert, ggf. umbenannt und auf den Docker-Container kopiert werden. Dafür wurde das Skript `create_and_copyJAR.sh` geschrieben:
+Da wir ein Maven-Projekt benutzen, muss nach der Implementierung das '.jar' file kompiliert, ggf. umbenannt und in den Docker-Container kopiert werden. Dafür wurde das Skript `createAndCopyJAR.sh` geschrieben:
 
 1. A - mithilfe eines Skriptes:
 
