@@ -123,6 +123,7 @@ Um die Keys dann absteigend zu sortieren, sodass der Länge Eintrag oben zu find
 Wir geben an, die Verzeichnisse Rekursiv zu durchsuchen (sodass auch alle Unterverzeichnisse nach .txt Dateien untersucht werden)
 
 ::
+
     // loop through all subdirectories recursively
     FileInputFormat.setInputDirRecursive(job, true);
 

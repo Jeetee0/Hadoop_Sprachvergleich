@@ -1,6 +1,11 @@
 Aufgabenstellung
 ================
 
+    *Hinweis* 
+
+    Diese Dokumentation ist ebenfalls einsehbar auf `readthedocs.io <https://hadoop-sprachvergleich.readthedocs.io/>`__ .
+
+    Der Quellcode des Projekts ist öffentlich auf `github <https://github.com/Jeetee0/Hadoop_Sprachvergleich>`__.
 
 Dies ist eine Belegaufgabe im Rahmen unseres Studiums an der HTW Berlin im Master Angewandte Informatik. Im Kurs Programmierkonzepte & Algorithmen arbeiten wir an Aufgabe 11. Es liegt ein Datensatz von 502 Textdateien vor (Beletristik) - unterteilt in 8 Sprachen. Ziel ist es, mit Apache Hadoop diese Texte zu analysieren und dabei drei Aufgaben zu erfüllen:
 
@@ -9,6 +14,8 @@ Dies ist eine Belegaufgabe im Rahmen unseres Studiums an der HTW Berlin im Maste
 3. Zusammenfassen der Ergebnisse
 
 Dabei soll eine Ausgabe in der Form: "Sprache – Längstes Wort – Länge“ generiert werden.
+
+`sequenceiq <https://hub.docker.com/r/sequenceiq/hadoop-docker/>`__
 
 Dokumentationsanforderungen
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^

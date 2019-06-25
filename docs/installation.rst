@@ -64,19 +64,20 @@ Quick & Dirty commands on Linux & Mac:
 
 **Local:**
 
-```
-docker ps
-cd <Project>
-./createAndCopyJAR.sh <container_id>
-docker exec -it <container_id> /bin/bash
-```
+::
+    docker ps
+    cd <Project>
+    ./createAndCopyJAR.sh <container_id>
+    docker exec -it <container_id> /bin/bash
+
 
 **Docker:**
-```
-cd /hadoop_sv/
-./createEnvironment.sh
-runhadoop
-```
+::
+
+    cd /hadoop_sv/
+    ./createEnvironment.sh
+    runhadoop
+
 
 Resourcen auf den Container bringen
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
