@@ -1,10 +1,12 @@
 Performance
 ===========
 
-Für das Heraussuchen der längsten Wörter haben wir zwei verschiedene Mapper implementiert und deren Performance verglichen.
+Wir haben verschiedene Test aufgestellt um die Performance unseres Codes und die von Hadoop zu evaluieren. 
 
 Replace vs Regex
 ~~~~~~~~~~~~~~~~
+
+Für das Heraussuchen der längsten Wörter haben wir zwei verschiedene Mapper implementiert und deren Performance verglichen.
 
 Der Replace-Algorithmus schaut sich jedes Wort an, entfernt (die meisten) unerwünschten Symbole und prüft, ob bereits ein längeres Wort gefunden wurde.
 Durch den RegEx-Algorithmus werden alle Wörter mithilfe des regulären Ausdrucks ``\w+`` gesucht und auf Länge überprüft.
@@ -35,10 +37,12 @@ Die Laufzeit der Algorithmen wurde mit den Testdaten überprüft. Es ist ersicht
 
 Aufgrund dieser Ergebnisse wird fortan nur noch der RegexMapper genutzt.
 
-Vergleich auf verschiedenen Rechnern
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Ausführungsdauer des Sprachvergleichs
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Folgende Tests wurden auf zwei verschiedenen Maschinen durchgeführt:
+Der Sprachvergleich wurde mit zwei verschiedenen Datensätzen getestet. ``textfiles.zip`` enthält den Vollen Datensatz aller 502 Textdateien, verteilt über die acht Sprachen. ``textfiles_mini.zip`` ist  eine Reduzierte Version, angelehnt an ``textfiles.zip``, speziell für Tests ausgelegt. Sie enthält nur 44 Textdateien.
+
+Außerdem wurden die Tests auf folgenden zwei Maschinen durchgeführt:
 
 +------------+----------------------+--------------------+
 |  Feature   |       **Mac**        |   **Windows PC**   |
@@ -54,53 +58,56 @@ Folgende Tests wurden auf zwei verschiedenen Maschinen durchgeführt:
 
 Da die Hardware sehr ähnlich ist, werden Testergebnisse erwartet, die nah beieinander liegen. 
 
-+--------------------+-----------------+----------+----------------+
-| textfiles_mini.zip                                               |
-+--------------------+-----------------+----------+----------------+
-| Language           | Amount of files | **Mac**  | **Windows PC** |
-+====================+=================+==========+================+
-| Ukrajinska         | 13              | 52s      | 39s            |
-+--------------------+-----------------+----------+----------------+
-| Deutsch            | 2               | 33s      | 21s            |
-+--------------------+-----------------+----------+----------------+
-| Francais           | 7               | 40s      | 28s            |
-+--------------------+-----------------+----------+----------------+
-| Russkyj            | 2               | 27s      | 21s            |
-+--------------------+-----------------+----------+----------------+
-| Espanol            | 5               | 33s      | 26s            |
-+--------------------+-----------------+----------+----------------+
-| Italiano           | 5               | 39s      | 26s            |
-+--------------------+-----------------+----------+----------------+
-| Nederlands         | 6               | 40s      | 27s            |
-+--------------------+-----------------+----------+----------------+
-| English            | 4               | 29s      | 27s            |
-+--------------------+-----------------+----------+----------------+
-| **Total**          | **509**         | **297s** | **219s**       |
-+--------------------+-----------------+----------+----------------+
+In den unten stehenden Tabellen ist die Ausführungsdauer der jeweiligen Schritte und der Gesammtdauer dargestellt. 
+
++--------------------+-----------------+----------------+----------------+
+| textfiles_mini.zip                                                     |
++--------------------+-----------------+----------------+----------------+
+| Language           | Amount of files | **MacBookPro** | **Windows PC** |
++====================+=================+================+================+
+| Ukrajinska         | 13              | 52s            | 39s            |
++--------------------+-----------------+----------------+----------------+
+| Deutsch            | 2               | 33s            | 21s            |
++--------------------+-----------------+----------------+----------------+
+| Francais           | 7               | 40s            | 28s            |
++--------------------+-----------------+----------------+----------------+
+| Russkyj            | 2               | 27s            | 21s            |
++--------------------+-----------------+----------------+----------------+
+| Espanol            | 5               | 33s            | 26s            |
++--------------------+-----------------+----------------+----------------+
+| Italiano           | 5               | 39s            | 26s            |
++--------------------+-----------------+----------------+----------------+
+| Nederlands         | 6               | 40s            | 27s            |
++--------------------+-----------------+----------------+----------------+
+| English            | 4               | 29s            | 27s            |
++--------------------+-----------------+----------------+----------------+
+| **Total**          | **44**          | **297s**       | **219s**       |
++--------------------+-----------------+----------------+----------------+
 
 
-+---------------+-----------------+-----------+------------+
-| textfiles.zip                                            |
-+---------------+-----------------+-----------+------------+
-| Language      | Amount of files | MacBookPro| Windows PC |
-+===============+=================+===========+============+
-| Ukrajinska    | 46              | 116s      | 99s        |
-+---------------+-----------------+-----------+------------+
-| Deutsch       | 50              | 102s      | 102s       |
-+---------------+-----------------+-----------+------------+
-| Francais      | 50              | 104s      | 125s       |
-+---------------+-----------------+-----------+------------+
-| Russkyj       | 223             | 396s      | 468s       |
-+---------------+-----------------+-----------+------------+
-| Espanol       | 25              | 62s       | 70s        |
-+---------------+-----------------+-----------+------------+
-| Italiano      | 50              | 123s      | 108s       |
-+---------------+-----------------+-----------+------------+
-| Nederlands    | 5               | 31s       | 27s        |
-+---------------+-----------------+-----------+------------+
-| English       | 52              | 148s      | 119s       |
-+---------------+-----------------+-----------+------------+
-| **Total**     | **504**         | **1085s** | **1126s**  |
-+---------------+-----------------+-----------+------------+
 
-Wenn die Anzahl der Jobs auf einen Reduziert wird, kann eine Performance verbesserung von ca. 8% (auf 996 Sekunden) beobachtet werden. Dies ist zurück zu führen auf das Starten und Stoppen der Jobs. Im Live-Betrieb würde das Setup auf ein Multi-Node Cluster umgelegt werden. Hier müsste eine deutliche Performance-verbesserung sichtbar werden.
+
++---------------+-----------------+----------------+----------------+
+| textfiles.zip                                                     |
++---------------+-----------------+----------------+----------------+
+| Language      | Amount of files | **MacBookPro** | **Windows PC** |
++===============+=================+================+================+
+| Ukrajinska    | 46              | 116s           | 99s            |
++---------------+-----------------+----------------+----------------+
+| Deutsch       | 50              | 102s           | 102s           |
++---------------+-----------------+----------------+----------------+
+| Francais      | 50              | 104s           | 125s           |
++---------------+-----------------+----------------+----------------+
+| Russkyj       | 223             | 396s           | 468s           |
++---------------+-----------------+----------------+----------------+
+| Espanol       | 25              | 62s            | 70s            |
++---------------+-----------------+----------------+----------------+
+| Italiano      | 50              | 123s           | 108s           |
++---------------+-----------------+----------------+----------------+
+| Nederlands    | 5               | 31s            | 27s            |
++---------------+-----------------+----------------+----------------+
+| English       | 52              | 148s           | 119s           |
++---------------+-----------------+----------------+----------------+
+| **Total**     | **502**         | **1085s**      | **1126s**      |
++---------------+-----------------+----------------+----------------+
+

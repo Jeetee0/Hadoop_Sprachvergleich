@@ -6,12 +6,12 @@ Die Ergebnisse sollen hier mit anderen Ausführungen verglichen werden.
 Hadoop - Sprachvergleich ohne Sprachseparierung
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+
 Zuerst war die Idee, den Job nicht auf Sprachen aufzuteilen, sondern alle Sprachen zusammen als Input zu wählen.
 Damit wurden auch etwas schneller Ergebnisse erzielt (996 Sekunden). Hier ist allerdings das Problem, dass uns
 dadurch die Information verloren geht, zu welcher Sprache ein Wort gehört. Dadurch werden die Wörter direkt vermischt und sind nicht mehr übersichtlich in einer Datei abrufbar.
 
-Die etwas schnellere Ausführung lässt sich dadurch erklären, da das Programm nur einen Job anlegen muss und nicht pro Sprache einen.
-Das kostet immer Zeit.
+Die etwas schnellere Ausführung lässt sich dadurch erklären, da das Programm nur einen Job anlegen muss und nicht pro Sprache einen. Im Live-Betrieb würde das Setup auf ein Multi-Node Cluster umgelegt werden. Hier müsste eine deutliche Performance-verbesserung sichtbar werden.
 
 Python - Sprachvergleich
 ~~~~~~~~~~~~~~~~~~~~~~~~
