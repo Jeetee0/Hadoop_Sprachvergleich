@@ -4,15 +4,7 @@
 
 ### Aufgabe
 
-Dies ist eine Aufgabe für das Studium an der HTW Berlin im Master Angewantde Informatik. 
-Im Kurs Programmierkonzepte & Algorithmen müssen wir im Semester eine Belegaufgabe bearbeiten.
-Wir haben uns die Aufgabe 11 ausgesucht. Dazu gehören drei Hauptbestandteile:
-
-- Zählen der Wörterlänge (pro Sprache)
-- Sortieren der Wörter der Länge nach (pro Sprache)
-- Zusammenfassen der Ergebnisse
-
-Dabei soll die Form: "Sprache – Längstes Wort – Länge“ generiert werden.
+Dies ist eine Belegaufgabe im Rahmen unseres Stuidums an der HTW Berlin im Master Angewandte Informatik. Für mehr Informationen kann die [dokumentation](https://hadoop-sprachvergleich.readthedocs.io/de/latest/index.html) eingesehen werden
 
 
 ### Dokumentation
@@ -68,6 +60,7 @@ docker exec -it <container_id> /bin/bash
 
 **Docker:**
 ```
+cd /hadoop_sv/
 ./createEnvironment.sh
 runhadoop
 ```

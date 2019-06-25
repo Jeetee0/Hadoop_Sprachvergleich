@@ -2,15 +2,13 @@ Aufgabenstellung
 ================
 
 
-Wir haben uns die Aufgabe 11 ausgesucht. Ziel ist es, aus einer Eingabe von Texten die längsten Wörter herauszusuchen.
+Dies ist eine Belegaufgabe im Rahmen unseres Stuidums an der HTW Berlin im Master Angewandte Informatik. Im Kurs Programmierkonzepte & Algorithmen arbeiten wir an Aufgabe 11. Es liegt ein Datensatz von 502 Textdateien vor (Beletristik) - unterteilt in 8 Sprachen. Ziel ist es, mit Apache Hadoop diese Texte zu analysieren und dabei drei Aufgaben zu erfüllen:
 
-Zum Schluss sollen die Ergebnisse in folgender Form zusammengefasst werden:
+1. Zählen der Wörterlänge (pro Sprache)
+2. Sortieren der Wörter der Länge nach (pro Sprache)
+3. Zusammenfassen der Ergebnisse
 
-::
-
-    "Sprache – Längstes Wort – Länge“
-
-Dabei sollen die längsten Wörter oben stehen.
+Dabei soll eine Ausgabe in der Form: "Sprache – Längstes Wort – Länge“ generiert werden.
 
 Lösungsansatz
 ^^^^^^^^^^^^^
