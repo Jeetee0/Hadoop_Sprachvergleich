@@ -4,6 +4,7 @@ import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapred.FileSplit;
 import org.apache.hadoop.mapreduce.Mapper;
 
 import java.io.File;
@@ -17,6 +18,10 @@ public class RegexMapper extends Mapper<LongWritable, Text, LongWritable, Text> 
     private String longestWord = "";
 
     protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
+
+        // Path filePath = ((FileSplit) context.getInputSplit()).getPath();
+
+
         Matcher m = Pattern.compile("\\w+", Pattern.UNICODE_CHARACTER_CLASS).matcher(value.toString());
 
         while (m.find()) {

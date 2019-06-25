@@ -105,3 +105,4 @@ Da die Hardware sehr ähnlich ist, werden Testergebnisse erwartet, die nah beiei
 | **Total**     | **509**         | **1085s** | **1126s**  |
 +---------------+-----------------+-----------+------------+
 
+Wenn die Anzahl der Jobs auf einen Reduziert wird, kann eine Performance verbesserung von ca. 8% (auf 996 Sekunden) beobachtet werden. Dies ist zurück zu führen auf das Starten und Stoppen der Jobs. Im Live-Betrieb würde das Setup auf ein Multi-Node Cluster umgelegt werden. Hier müsste eine deutliche Performance-verbesserung sichtbar werden.

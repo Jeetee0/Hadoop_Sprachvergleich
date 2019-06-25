@@ -2,6 +2,9 @@ Aufgabenstellung
 ================
 
 
+.. image:: img/magnetic_balls_2.jpg
+   :width: 120pt
+
 Dies ist eine Belegaufgabe im Rahmen unseres Studiums an der HTW Berlin im Master Angewandte Informatik. Im Kurs Programmierkonzepte & Algorithmen arbeiten wir an Aufgabe 11. Es liegt ein Datensatz von 502 Textdateien vor (Beletristik) - unterteilt in 8 Sprachen. Ziel ist es, mit Apache Hadoop diese Texte zu analysieren und dabei drei Aufgaben zu erfüllen:
 
 1. Zählen der Wörterlänge (pro Sprache)
@@ -26,7 +29,6 @@ Mittels Docker starten wir verschiedene Nodes. Auf diesen können wir durch Hado
 
 Wir starten pro Sprache einen Job der den MapReduce Prozess ausführt. Dieser findet für eine Sprache das Längste Wort und speichert dieses in einer Part-Datei.
 
-[TODO: Oskar, vielleicht kannst du das bessser erklären?)
 
 -  pro Sprache einen Job, der MapReduce-Prozess ausführt -> findet
    längstes Wort pro Sprache
