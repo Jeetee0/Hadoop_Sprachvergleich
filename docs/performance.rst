@@ -13,7 +13,7 @@ Durch den RegEx-Algorithmus werden alle Wörter mithilfe des regulären Ausdruck
 Ergebnisse
 ~~~~~~~~~~
 
-Die Laufzeit der Algorithmen wurde mit den Testdaten überprüft. Es ist ersichtlich dass der RegexMapper wenige Sekunden schneller ist. Darüber hinaus liefert er allerdings auch sauberere Ergebnisse, da er auch Bindestriche filtert. Deswegen haben wir uns für den RegexMapper in der finalen Implementierung entschieden
+Die Laufzeit der Algorithmen wurde mit den Testdaten überprüft. Es ist ersichtlich dass der RegexMapper wenige Sekunden schneller ist. Darüber hinaus liefert er allerdings auch sauberere Ergebnisse, da er auch Bindestriche filtert. Deswegen haben wir uns für den RegexMapper in der finalen Implementierung entschieden.
 
 +-----------+---------------+-------------+
 |  JOB No.  | replaceMapper | regexMapper |
@@ -37,10 +37,11 @@ Die Laufzeit der Algorithmen wurde mit den Testdaten überprüft. Es ist ersicht
 | **Total** | **213s**      | **209s**    |
 +-----------+---------------+-------------+
 
-Aufgrund dieser Ergebnisse wird fortann nurnoch der RegexMapper genutzt. 
+Aufgrund dieser Ergebnisse wird fortan nur noch der RegexMapper genutzt.
 
-Folgende Tests wurden auf zwei verschiedenen Maschinen durchgeführt. 
 
+
+Folgende Tests wurden auf zwei verschiedenen Maschinen durchgeführt:
 
 +------------+----------------------+--------------------+
 |  Feature   |       **Mac**        |   **Windows PC**   |
@@ -84,25 +85,25 @@ Da die Hardware sehr ähnlich ist, werden Testergebnisse erwartet, die nah beiei
 +---------------+-----------------+-----------+------------+
 | textfiles.zip                                            |
 +---------------+-----------------+-----------+------------+
-| Language      | Amount of files | Mac       | Windows PC |
+| Language      | Amount of files | MacBookPro| Windows PC |
 +===============+=================+===========+============+
-| Ukrajinska    | 47              | 116s      | 99s        |
+| Ukrajinska    | 46              | 116s      | 99s        |
 +---------------+-----------------+-----------+------------+
-| Deutsch       | 51              | 102s      | 102s       |
+| Deutsch       | 50              | 102s      | 102s       |
 +---------------+-----------------+-----------+------------+
-| Francais      | 51              | 104s      | 125s       |
+| Francais      | 50              | 104s      | 125s       |
 +---------------+-----------------+-----------+------------+
-| Russkyj       | 224             | 396s      | 468s       |
+| Russkyj       | 223             | 396s      | 468s       |
 +---------------+-----------------+-----------+------------+
-| Espanol       | 26              | 62s       | 70s        |
+| Espanol       | 25              | 62s       | 70s        |
 +---------------+-----------------+-----------+------------+
-| Italiano      | 51              | 123s      | 108s       |
+| Italiano      | 50              | 123s      | 108s       |
 +---------------+-----------------+-----------+------------+
-| Nederlands    | 6               | 31s       | 27s        |
+| Nederlands    | 5               | 31s       | 27s        |
 +---------------+-----------------+-----------+------------+
-| English       | 53              | 148s      | 119s       |
+| English       | 52              | 148s      | 119s       |
 +---------------+-----------------+-----------+------------+
-| **Total**     | **509**         | **1085s** | **1126s**  |
+| **Total**     | **504**         | **1085s** | **1126s**  |
 +---------------+-----------------+-----------+------------+
 
 Wenn die Anzahl der Jobs auf einen Reduziert wird, kann eine Performance verbesserung von ca. 8% (auf 996 Sekunden) beobachtet werden. Dies ist zurück zu führen auf das Starten und Stoppen der Jobs. Im Live-Betrieb würde das Setup auf ein Multi-Node Cluster umgelegt werden. Hier müsste eine deutliche Performance-verbesserung sichtbar werden.

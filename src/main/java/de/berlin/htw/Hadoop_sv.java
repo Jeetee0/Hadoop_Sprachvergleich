@@ -4,35 +4,30 @@ import de.berlin.htw.mappers.AggregationMapper;
 import de.berlin.htw.mappers.RegexMapper;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
-import org.apache.hadoop.fs.FileUtil;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
-import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
-import org.apache.hadoop.mapreduce.lib.output.LazyOutputFormat;
-import org.apache.hadoop.mapreduce.lib.output.MultipleOutputs;
-import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 public class Hadoop_sv {
 
-
-    /*
-    stuff todo:
-    - ergebnisse zusammenfassen: längste wörter pro sprache in zieldatei (Form: Sprache – Längstes Wort – Länge)
-
-     */
-
     public static void main( String[] args ) throws IOException, ClassNotFoundException, InterruptedException
     {
+        if(args.length != 3)
+        {
+            System.out.println("Please provide the following paths as arguments: 'input-path', 'output-path' & 'result-path'.");
+            System.exit(1);
+        }
+        if (args[0].equals("") || args[1].equals("") || args[2].equals(""))
+            System.exit(1);
+
+
         long totalStart = System.currentTimeMillis();
 
         Configuration conf = new Configuration();
@@ -45,6 +40,9 @@ public class Hadoop_sv {
         File[] languageDirectories = new File(rootPath).listFiles();
         int languageProgress = 0;
         int languages = languageDirectories.length;
+
+        // one job for all files:
+        //startJobToCountWordLengthForAFolder(conf, new File(rootPath), destinationPath);
 
         debugMessage(String.format("Looping through subdirectories of rootfolder: '%s'", rootPath), "DEBUG");
         // create a different job for each language folder
@@ -118,7 +116,6 @@ public class Hadoop_sv {
 
         aggregateJob.setOutputKeyClass(Text.class);
         aggregateJob.setOutputValueClass(Text.class);
-        aggregateJob.setSortComparatorClass(LongWritable.DecreasingComparator.class);
 
         FileInputFormat.addInputPath(aggregateJob, new Path(inputPath));
         FileOutputFormat.setOutputPath(aggregateJob, new Path(outputPath));
