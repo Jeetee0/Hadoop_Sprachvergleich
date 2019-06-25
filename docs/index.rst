@@ -12,17 +12,10 @@ Wilkommen zur Hadoop Sprachvergleich dokumentation!
    
    tasks
    installation
-   recompilation
    usefulCommands
    implementation
    code-explanation
-   tests
    performance
+   tests
    comparison
 
-
-
-
-
-
-* :ref:`search`

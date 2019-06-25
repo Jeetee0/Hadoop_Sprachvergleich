@@ -59,8 +59,27 @@ Um den Docker Container zu **testen** kann das mitgelieferte Beispiel wie
 Ausführung vorbereiten
 ----------------------
 
-Resourcen auf Container bringen
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Quick & Dirty commands on Linux & Mac:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+**Local:**
+
+```
+docker ps
+cd <Project>
+./createAndCopyJAR.sh <container_id>
+docker exec -it <container_id> /bin/bash
+```
+
+**Docker:**
+```
+cd /hadoop_sv/
+./createEnvironment.sh
+runhadoop
+```
+
+Resourcen auf den Container bringen
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Die Textdateien müssen in das DFS Dateisystem kopiert werden. Dabei sind folgende Schritte nötig:
 
@@ -108,7 +127,7 @@ geschrieben:
 
     create_and_copyJAR.sh <containerId>
 
-1.b: Manuel: *Alternativ* kann die Maven .jar Manuel erzeugt und in den
+1.b: anuell: *Alternativ* kann die Maven .jar manuell erzeugt und in den
    Container kopiert werden:
 
 **Local:**
@@ -132,7 +151,7 @@ geschrieben:
 Hadoop-Job ausführen
 --------------------
 
-Um den Hadoop-Job zu starten wird folgender Befehl ausgeführt:
+Um den Hadoop-Job zu starten wird folgender Befehl ausgeführt (beim Starten des Docker-Containers sollte auch ein Alias angelegt worden sein. Damit lässt sich der lange Befehl auch mit ```runhadoop``` ausführen.):
 
 **Docker:**
 
@@ -150,20 +169,25 @@ Die Ergebnisse liegen jetzt in ``hadoop_sv/output`` und können direkt angezeigt
     
     $HADOOP_PREFIX/bin/hdfs dfs -cat /hadoop_sv/output/part-r-00000
 
+
 Oder die Dateien können in zwei Schritten auf das Hostsystem kopiert werden:
 
-1. HDFS ➡️ Docker
+1. HDFS --> Docker
+
+Um die Ergebnisse vom HDFS auf den Container zu kopieren kann auch der alias ``copyresults`` verwendet werden.
 
 **Docker:**
 
 ::
 
    $HADOOP_PREFIX/bin/hdfs dfs -get /hadoop_sv/output /hadoop_sv/
+   $HADOOP_PREFIX/bin/hdfs dfs -get /hadoop_sv/results /hadoop_sv/
 
-2. Docker ️➡️ ️Hostmaschine
+2. Docker -->️ ️Hostmaschine
 
 **Local:**
 
 ::
 
    docker cp <containerId>:/hadoop_sv/output ~/Desktop/
+   docker cp <containerId>:/hadoop_sv/results ~/Desktop/
