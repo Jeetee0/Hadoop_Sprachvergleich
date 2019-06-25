@@ -1,22 +1,56 @@
-Test
-====
+Vergleich
+=========
 
-Um die Funktionalität der "jar"-Datei zu testen, wurde das Shell-Skript 'testHadoopSv.sh' geschrieben.
-Da die Hadoop-Jobs aus einem Docker-Container heraus gestartet werden, war ein Shell-Skript die einfachste Lösung.
-Dieses Skript wird beim Erstellen des Containers direkt in den Container kopiert.
-Es benutzt einen Testdatensatz mit nur zwei Sprachen, führt dafür den Hadoop-Sprachvergleich aus und
-vergleicht die Resultate mit den bekannten Lösungen.
+Die Ergebnisse sollen hier mit anderen Ausführungen verglichen werden.
 
+Hadoop - Sprachvergleich ohne Sprachseparierung
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Das Skript wird mit dem Argument '0' oder '1' gestartet, um den Sprachvergleich zu starten und danach die Ergebnisse auszuwerten (0), oder nur die Ergebnisse auszuwerten (1).
+Zuerst war die Idee, den Job nicht auf Sprachen aufzuteilen, sondern alle Sprachen zusammen als Input zu wählen.
+Damit wurden auch etwas schneller Ergebnisse erzielt (996 Sekunden). Hier ist allerdings das Problem, dass uns
+dadurch die Information verloren geht, zu welcher Sprache ein Wort gehört. Dadurch werden die Wörter direkt vermischt und sind nicht mehr übersichtlich in einer Datei abrufbar.
 
-Demnach wird dann der Sprachvergleich ausgeführt oder nicht.
-Die Ergebnisse werden dann automatisch vom HDFS in den Container kopiert: ``/hadoop_sv/test_output`` & ``/hadoop_sv/test_results``
+Die etwas schnellere Ausführung lässt sich dadurch erklären, da das Programm nur einen Job anlegen muss und nicht pro Sprache einen.
+Das kostet immer Zeit.
 
-Die Auswertung erfolgt nun, indem die zu vergleichenden Werte erst für den Anwender gezeigt werden und danach mithilfe der "assert()"-Methode vergleichen werden.
-Falls der Vergleich nicht erfolgreich ist, beendet sich das Programm.
+Python - Sprachvergleich
+~~~~~~~~~~~~~~~~~~~~~~~~
 
-Es werden die folgenden Fälle untersucht:
-- Anzahl der Eingangsdateien bei "Deutsch" müssen mit der deutschen Wörteranzahl übereinstimmen (pro Datei wird ein längstes Wort gespeichert).
-- Anzahl der Ordner (Sprachen) soll mit der Anzahl der Wörter in den Resultaten übereinstimmen (Zwei Ordner resultieren in zwei längsten Wörtern, pro Sprache eins).
-- Das deutsche & englische Wort werden konrekt mit den Wörtern 'himmelherrgottssakkermentische' & 'circunstanciadamente' verglichen, da dies die längsten Wörter in den Beispieldateien sind.
+Ein Python-Skript sollte die gleiche Aufgabe bewältigen:
+
+- Alle Textdateien eines Verzeichnisses finden
+- Textdateien durchgehen und längstes Wort herausfinden
+- Pro Sprache das längste Wort finden und alle Sprachen zusammenfassen
+
+Das Skript erledigt diese Aufgabe in 22 Sekunden.
+Die Ausgabe des Skriptes:
+::
+
+    INFO: Counting words for all txt-files from root-folder: '/Users/d064467/Projects/Hadoop_Sprachvergleich/Docker/textfiles'
+    INFO: Found 0 amount of files in subfolder: '/Users/d064467/Projects/Hadoop_Sprachvergleich/Docker/textfiles'
+    INFO: Found 0 amount of files in subfolder: '/Users/d064467/Projects/Hadoop_Sprachvergleich/Docker/textfiles/Espanol'
+    INFO: Found 25 amount of files in subfolder: '/Users/d064467/Projects/Hadoop_Sprachvergleich/Docker/textfiles/Espanol/TXT'
+    INFO: Found 0 amount of files in subfolder: '/Users/d064467/Projects/Hadoop_Sprachvergleich/Docker/textfiles/Russkyj'
+    INFO: Found 223 amount of files in subfolder: '/Users/d064467/Projects/Hadoop_Sprachvergleich/Docker/textfiles/Russkyj/TXT'
+    INFO: Found 0 amount of files in subfolder: '/Users/d064467/Projects/Hadoop_Sprachvergleich/Docker/textfiles/Francais'
+    INFO: Found 50 amount of files in subfolder: '/Users/d064467/Projects/Hadoop_Sprachvergleich/Docker/textfiles/Francais/TXT'
+    INFO: Found 0 amount of files in subfolder: '/Users/d064467/Projects/Hadoop_Sprachvergleich/Docker/textfiles/English'
+    INFO: Found 52 amount of files in subfolder: '/Users/d064467/Projects/Hadoop_Sprachvergleich/Docker/textfiles/English/TXT'
+    INFO: Found 0 amount of files in subfolder: '/Users/d064467/Projects/Hadoop_Sprachvergleich/Docker/textfiles/Ukrajinska'
+    INFO: Found 47 amount of files in subfolder: '/Users/d064467/Projects/Hadoop_Sprachvergleich/Docker/textfiles/Ukrajinska/TXT'
+    INFO: Found 0 amount of files in subfolder: '/Users/d064467/Projects/Hadoop_Sprachvergleich/Docker/textfiles/Italiano'
+    INFO: Found 50 amount of files in subfolder: '/Users/d064467/Projects/Hadoop_Sprachvergleich/Docker/textfiles/Italiano/TXT'
+    INFO: Found 0 amount of files in subfolder: '/Users/d064467/Projects/Hadoop_Sprachvergleich/Docker/textfiles/Nederlands'
+    INFO: Found 5 amount of files in subfolder: '/Users/d064467/Projects/Hadoop_Sprachvergleich/Docker/textfiles/Nederlands/TXT'
+    INFO: Found 0 amount of files in subfolder: '/Users/d064467/Projects/Hadoop_Sprachvergleich/Docker/textfiles/Deutsch'
+    INFO: Found 50 amount of files in subfolder: '/Users/d064467/Projects/Hadoop_Sprachvergleich/Docker/textfiles/Deutsch/TXT'
+    FINISHED: Needed 22.09651803970337 seconds to count words for 502 files.
+    INFO: Longest word for each language:
+        Espanol - 20 - circunstanciadamente
+        Russkyj - 25 - человеконенавистничеством
+        Francais - 21 - constitutionnellement
+        English - 70 - Mekkamuselmannenmassenmenchenmoerdermohrenmuttermarmormonumentenmacher
+        Ukrajinska - 20 - благочестивомудренно
+        Italiano - 27 - quattrocentoquarantatremila
+        Nederlands - 22 - landbouwgereedschappen
+        Deutsch - 34 - eindusendsöbenhunnertuneiunsösstig
