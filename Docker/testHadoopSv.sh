@@ -41,7 +41,7 @@ assert ()                 #  If condition false,
 
 if [ -z "$1" ]
 then
-  debug "ERR" "Please specify if you want to just analyze results (0) or also execute test case (1)"
+  debug "ERR" "Please specify if you want to execute test case & analyze results (0) or just analyze the results (1)"
   exit 0
 fi
 
