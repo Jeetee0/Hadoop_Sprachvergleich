@@ -19,18 +19,17 @@ public class Hadoop_sv {
 
     public static void main( String[] args ) throws IOException, ClassNotFoundException, InterruptedException
     {
+
+        long totalStart = System.currentTimeMillis();
+
         if(args.length != 3)
         {
-            System.out.println("Please provide the following paths as arguments: 'input-path', 'output-path' & 'result-path'.");
+            System.out.println("Please provide the following paths as arguments (3): 'input-path', 'output-path' & 'result-path'.");
             System.exit(1);
         }
         if (args[0].equals("") || args[1].equals("") || args[2].equals(""))
             System.exit(1);
 
-
-        long totalStart = System.currentTimeMillis();
-
-        Configuration conf = new Configuration();
 
         // input folder should have the following structure:
         // <rootPath>/<languageDirectories>/TXT/<txt-files>
@@ -40,6 +39,8 @@ public class Hadoop_sv {
         File[] languageDirectories = new File(rootPath).listFiles();
         int languageProgress = 0;
         int languages = languageDirectories.length;
+
+        Configuration conf = new Configuration();
 
         // one job for all files:
         //startJobToCountWordLengthForAFolder(conf, new File(rootPath), destinationPath);
@@ -66,7 +67,6 @@ public class Hadoop_sv {
         debugMessage(String.format("Aggregating results to %s", resultPath), "DEBUG");
 
         //data is located at: /hadoop_sprachvergleich/output/<language>/part-r-00000
-        //FileUtil.copy(filesystem, new Path(destinationPath), filesystem, new Path(resultPath), false, conf);
 
         aggregatePartFiles(conf, destinationPath, resultPath);
         debugMessage(String.format("Finished aggregating longest words for all languages. Results are under: %s", resultPath), "DEBUG");

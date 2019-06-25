@@ -1,5 +1,5 @@
-Performance der Mapper Funktionen
-=================================
+Performance
+===========
 
 Für das Heraussuchen der längsten Wörter haben wir zwei verschiedene Mapper implementiert und deren Performance verglichen.
 
@@ -8,10 +8,6 @@ Replace vs Regex
 
 Der Replace-Algorithmus schaut sich jedes Wort an, entfernt (die meisten) unerwünschten Symbole und prüft, ob bereits ein längeres Wort gefunden wurde.
 Durch den RegEx-Algorithmus werden alle Wörter mithilfe des regulären Ausdrucks ``\w+`` gesucht und auf Länge überprüft.
-
-
-Ergebnisse
-~~~~~~~~~~
 
 Die Laufzeit der Algorithmen wurde mit den Testdaten überprüft. Es ist ersichtlich dass der RegexMapper wenige Sekunden schneller ist. Darüber hinaus liefert er allerdings auch sauberere Ergebnisse, da er auch Bindestriche filtert. Deswegen haben wir uns für den RegexMapper in der finalen Implementierung entschieden.
 
@@ -39,7 +35,8 @@ Die Laufzeit der Algorithmen wurde mit den Testdaten überprüft. Es ist ersicht
 
 Aufgrund dieser Ergebnisse wird fortan nur noch der RegexMapper genutzt.
 
-
+Vergleich auf verschiedenen Rechnern
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Folgende Tests wurden auf zwei verschiedenen Maschinen durchgeführt:
 
