@@ -8,16 +8,16 @@ RUN echo 'alias copyresults="rm -r /hadoop_sv/results; rm -r /hadoop_sv/output; 
 
 ADD createEnvironment.sh hadoop_sv/
 RUN chmod 777 /hadoop_sv/createEnvironment.sh
-ADD test_hadoop_sv.sh hadoop_sv/
-RUN chmod 777 /hadoop_sv/test_hadoop_sv.sh
+ADD testHadoopSv.sh hadoop_sv/
+RUN chmod 777 /hadoop_sv/testHadoopSv.sh
 
 # add test_zip:
 ADD test_textfiles.zip hadoop_sv/
 RUN unzip /hadoop_sv/test_textfiles.zip -d /hadoop_sv/test_textfiles
 
 # QA environment zip (abstract of all files):
-ADD textfiles_mini_2_languages.zip hadoop_sv/
-RUN unzip /hadoop_sv/textfiles_mini_2_languages.zip -d /hadoop_sv/textfiles
+ADD textfiles.zip hadoop_sv/
+RUN unzip /hadoop_sv/textfiles.zip -d /hadoop_sv/textfiles
 
 # production environment zip (all files):
 #ADD textfiles.zip hadoop_sv/
