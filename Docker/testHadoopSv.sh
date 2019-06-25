@@ -31,7 +31,7 @@ assert ()                 #  If condition false,
     echo "Assertion successful."
     echo ""
   fi  
-} # Insert a similar assert() function into a script you need to debug.    
+}    
 #######################################################################
 
 
@@ -47,7 +47,7 @@ fi
 
 debug "INFO" "Script to test the behaviour of Hadoop_sv.jar (depending on test_textfiles.zip) started..."
 
-if [ $1 = 1 ]; then				# user chose to execute testjob
+if [ $1 = 0 ]; then				# user chose to execute testjob
   # remove destination folders:
   debug "INFO" "Removing destination folders..."
   rm -r /hadoop_sv/test_output/

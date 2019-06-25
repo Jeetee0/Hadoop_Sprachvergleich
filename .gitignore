@@ -12,4 +12,5 @@ bin/
 .vscode
 .DS_Store
 Hadoop_sv.iml
+Hadoop_Sprachvergleich.iml
 docs/_build/*
