@@ -1,16 +1,12 @@
 package de.berlin.htw.mappers;
 
-import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
-import org.apache.hadoop.mapred.FileSplit;
 import org.apache.hadoop.mapreduce.Mapper;
 
-import java.io.File;
-import java.util.regex.*;
 import java.io.IOException;
-import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RegexMapper extends Mapper<LongWritable, Text, LongWritable, Text> {
 

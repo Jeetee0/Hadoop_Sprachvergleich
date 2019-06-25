@@ -1,16 +1,10 @@
 package de.berlin.htw.mappers;
 
-import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
-import org.apache.hadoop.mapred.FileSplit;
 import org.apache.hadoop.mapreduce.Mapper;
-import org.apache.hadoop.mapreduce.Reducer;
 
 import java.io.IOException;
-import java.util.StringTokenizer;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class AggregationMapper extends Mapper<LongWritable, Text, Text, Text> {
 
