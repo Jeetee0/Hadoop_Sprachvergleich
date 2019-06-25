@@ -4,7 +4,7 @@
 
 ### Aufgabe
 
-Dies ist eine Belegaufgabe im Rahmen unseres Stuidums an der HTW Berlin im Master Angewandte Informatik. Für mehr Informationen kann die [dokumentation](https://hadoop-sprachvergleich.readthedocs.io/de/latest/index.html) eingesehen werden
+Dies ist eine Belegaufgabe im Rahmen unseres Studiums an der HTW Berlin im Master Angewandte Informatik. Für mehr Informationen kann die [dokumentation](https://hadoop-sprachvergleich.readthedocs.io/de/latest/index.html) eingesehen werden
 
 
 ### Dokumentation

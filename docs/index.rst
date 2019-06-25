@@ -10,8 +10,7 @@ Wilkommen zur Hadoop Sprachvergleich dokumentation!
    :maxdepth: 2
    :caption: Inhalt:
    
-Diese Dokumentation ist ebenfalls einsehbar auf https://hadoop-sprachvergleich.readthedocs.io/.
-Der Quellcode des Projekts ist öffentlich einsehbar auf https://github.com/Jeetee0/Hadoop_Sprachvergleich.
+
 
    tasks
    installation
@@ -22,3 +21,6 @@ Der Quellcode des Projekts ist öffentlich einsehbar auf https://github.com/Jeet
    tests
    comparison
 
+Diese Dokumentation ist ebenfalls einsehbar auf https://hadoop-sprachvergleich.readthedocs.io/.
+
+Der Quellcode des Projekts ist öffentlich einsehbar auf https://github.com/Jeetee0/Hadoop_Sprachvergleich.
