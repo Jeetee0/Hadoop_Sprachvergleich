@@ -13,9 +13,12 @@ Wilkommen zur Hadoop Sprachvergleich dokumentation!
    tasks
    installation
    recompilation
-   performance
    usefulCommands
    implementation
+   code-explanation
+   tests
+   performance
+   comparison
 
 
 
