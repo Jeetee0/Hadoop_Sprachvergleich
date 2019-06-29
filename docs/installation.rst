@@ -43,8 +43,8 @@ ausgeführt werden:
     docker build -t sv .
     docker run -it sv /etc/bootstrap.sh -bash --name docker_hadoop
 
-Um den Docker Container zu **testen** kann das mitgelieferte Beispiel wie
- ausgeführt und dessen Ergebnisse ausgelesen werden.
+
+Um den Docker Container zu **testen** kann das mitgelieferte Beispiel wie folgt ausgeführt und dessen Ergebnisse ausgelesen werden.
 
 **Docker:**
 

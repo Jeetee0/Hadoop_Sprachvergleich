@@ -18,6 +18,6 @@ Falls der Vergleich nicht erfolgreich ist, beendet sich das Programm.
 
 Es werden die folgenden Fälle untersucht:
 
--  Anzahl der Eingangsdateien bei "Deutsch" müssen mit der deutschen Wörteranzahl übereinstimmen (pro Datei wird ein längstes Wort gespeichert).
+-  Anzahl der Eingangsdateien für den Ordner "Deutsch" müssen mit der deutschen Wörteranzahl übereinstimmen (pro Datei wird ein längstes Wort gespeichert).
 -  Anzahl der Ordner (Sprachen) soll mit der Anzahl der Wörter in den Resultaten übereinstimmen (Zwei Ordner resultieren in zwei längsten Wörtern, pro Sprache eins).
 -  Das deutsche & spanische Wort werden konrekt mit den Wörtern ``himmelherrgottssakkermentische`` & ``circunstanciadamente`` verglichen, da dies die längsten Wörter in den Beispieldateien sind.

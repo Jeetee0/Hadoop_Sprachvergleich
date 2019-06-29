@@ -23,6 +23,9 @@ Ein Python-Skript sollte die gleiche Aufgabe bewältigen:
 - Pro Sprache das längste Wort finden und alle Sprachen zusammenfassen
 
 Das Skript erledigt diese Aufgabe in 22 Sekunden.
+Python kann hier punkten, da es sich nicht um riesige Datenmengen handelt. Durch unseren Multi-Node-Cluster-versuch wollten wir zeigen, dass sich bei deutlich längeren Textdateien die Parallelelisierung von Hadoop ab einem bestimmten Punkt rechnet.
+Python wird immer deutlich länger brauchen, umso größer die Datenmengen werden.
+
 Die Ausgabe des Skriptes:
 ::
 

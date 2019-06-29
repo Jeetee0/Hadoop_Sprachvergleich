@@ -58,7 +58,7 @@ Außerdem wurden die Tests auf folgenden zwei Maschinen durchgeführt:
 
 Da die Hardware sehr ähnlich ist, werden Testergebnisse erwartet, die nah beieinander liegen. 
 
-In den unten stehenden Tabellen ist die Ausführungsdauer der jeweiligen Schritte und der Gesammtdauer dargestellt. 
+In den unten stehenden Tabellen ist die Ausführungsdauer der jeweiligen Schritte und der Gesamtdauer dargestellt.
 
 +--------------------+-----------------+----------------+----------------+
 | textfiles_mini.zip                                                     |
@@ -119,7 +119,7 @@ Dadurch erhofften wir uns ein deutlich größeres Potential, unseren Sprachvergl
 
 Wir erzeugten mithilfe des Python-Skriptes ``multiply_filesize.py`` eine größere Inputdatei, bei der wir die Länge der einzelnen Textdateien verfünffachten.
 Dadurch wollten wir herausfinden, wie sich Hadoop bei größeren Datenmengen verhält. Da es für Auswertung von Petabyte an Daten gedacht ist, wollten wir damit ein bisschen in diese Richtung gehen.
-Der MapReduce-Prozess profitiert durch die längeren Textdateien. Die Mapper werten über längere Zeit parallel die einzelnen Textdateien aus.
+Der MapReduce-Prozess würde von den längeren Textdateien profitieren. Die Mapper könnten über längere Zeit parallel die einzelnen Textdateien auswerten.
 Dadurch soll der Overhead, der durch Anlegen der verschiedenen Jobs und Mapper entsteht, kompensiert werden.
 
 Leider gelang es uns nicht den Job auf diesen Servern zu starten. Wir haben sehr viele Konfigurationen probiert, allerdings akzeptierte das HDFS die Slave-Container nicht als datanodes, obwohl dies beim Starten bestätigt wurde.
