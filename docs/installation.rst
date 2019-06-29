@@ -62,9 +62,12 @@ Ausführung vorbereiten
 Quick & Dirty commands on Linux & Mac:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+Diese Variante bietet den minimalen Aufwand, um die gesamte Umgebung vorzubereiten.
+
 **Local:**
 
 ::
+
     docker ps
     cd <Project>
     ./createAndCopyJAR.sh <container_id>
@@ -79,22 +82,22 @@ Quick & Dirty commands on Linux & Mac:
     runhadoop
 
 
-Resourcen auf den Container bringen
+Resourcen in den Container kopieren
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Die Textdateien müssen in das DFS Dateisystem kopiert werden. Dabei sind folgende Schritte nötig:
+Die Textdateien müssen in das HDFS kopiert werden. Dabei sind folgende Schritte nötig:
 
-- Hostmaschine ➡️ Docker (dieser Schritt wird automatisch durch das Dockerfile ausgeführt)
-- Docker ➡️ DFS (dieser Schritt muss wie unten beschrieben ausgeführt werden)
+- Hostmaschine -> Docker-Container (dieser Schritt wird automatisch durch das Dockerfile ausgeführt)
+- Docker -> HDFS (dieser Schritt muss wie unten beschrieben ausgeführt werden)
 
-In ``./Docker/`` befindet sich die Input datei (``textfiles.zip``) und
+Unter ``./Docker/`` befindet sich die Input datei (``textfiles.zip``) und
 eine kleinere Testdatei (``textfiles_mini.zip``). Diese enthalten
 Beispiel-Text-Dateien, die analysiert werden sollen. Diese Dateien
-werden Automatisch durch das Dockerfile in den Docker Container kopiert.
-Um andere Dateien zu testen kann das Dockerfile bearbeitet werden.
+werden automatisch durch das Dockerfile in den Docker Container kopiert.
+Um andere Dateien zu testen, kann das Dockerfile bearbeitet werden.
 
-Falls man sich noch nicht in bash des Containers befindet holt man sich
-die container-id mit ``docker ps``, und kopiert sie in folgenden Befehl:
+Falls man sich noch nicht in der Shell des Containers befindet, holt man sich
+die container-id mit ``docker ps``, und benutzt sie im folgenden Befehl:
 
 **Local:**
 
@@ -120,7 +123,7 @@ Da wir ein Maven-Projekt benutzen, muss nach der Implementierung das
 kopiert werden. Dafür wurde das Skript ``create_and_copyJAR.sh``
 geschrieben:
 
-1.a: Mit Hilfe von script
+1.a: Mithilfe eines Skriptes
 
 **Local:**
 
@@ -128,7 +131,7 @@ geschrieben:
 
     create_and_copyJAR.sh <containerId>
 
-1.b: anuell: *Alternativ* kann die Maven .jar manuell erzeugt und in den
+1.b: manuell: *Alternativ* kann die "jar"-Datei mithilfe von Maven erzeugt und in den
    Container kopiert werden:
 
 **Local:**
@@ -152,7 +155,8 @@ geschrieben:
 Hadoop-Job ausführen
 --------------------
 
-Um den Hadoop-Job zu starten wird folgender Befehl ausgeführt (beim Starten des Docker-Containers sollte auch ein Alias angelegt worden sein. Damit lässt sich der lange Befehl auch mit ```runhadoop``` ausführen.):
+Um den Sprachvergleich zu starten wird der folgende Befehl ausgeführt. Dabei müssen drei Argumente dem Befehl übergeben werden: 'Input-Pfad', 'Output-Pfad' & 'result-Pfad'.
+Beim Starten des Docker-Containers sollte auch ein Alias angelegt worden sein. Damit lässt sich der folgende Befehl auch mit ```runhadoop``` ausführen.
 
 **Docker:**
 
@@ -164,16 +168,21 @@ Um den Hadoop-Job zu starten wird folgender Befehl ausgeführt (beim Starten des
 Ergebnisse sichten
 ------------------
 
-Die Ergebnisse liegen jetzt in ``hadoop_sv/output`` und können direkt angezeigt werden:
+Die Ergebnisse liegen nach Ausführung des Sprachvergleiches in ``hadoop_sv/output`` und ``hadoop_sv/results``.
+
+- ``hadoop_sv/output`` enthält die Zwischenergebnisse - die längsten Wörter einer Sprache
+- ``hadoop_sv/results`` enthält das Ergebnis - eine Datei mit den längsten Wörtern aller Sprachen
+
+Die Ergebnisse können im Container mit folgendem Befehl angeguckt werden:
 
 ::
     
-    $HADOOP_PREFIX/bin/hdfs dfs -cat /hadoop_sv/output/part-r-00000
+    $HADOOP_PREFIX/bin/hdfs dfs -cat /hadoop_sv/results/part-r-00000
 
 
-Oder die Dateien können in zwei Schritten auf das Hostsystem kopiert werden:
+Wenn die Resultate auf dem Hostsystem angeguckt werden sollen können sie mittels zwei Schritten kopiert werden:
 
-1. HDFS --> Docker
+1. HDFS -> Docker
 
 Um die Ergebnisse vom HDFS auf den Container zu kopieren kann auch der alias ``copyresults`` verwendet werden.
 
@@ -184,7 +193,7 @@ Um die Ergebnisse vom HDFS auf den Container zu kopieren kann auch der alias ``c
    $HADOOP_PREFIX/bin/hdfs dfs -get /hadoop_sv/output /hadoop_sv/
    $HADOOP_PREFIX/bin/hdfs dfs -get /hadoop_sv/results /hadoop_sv/
 
-2. Docker -->️ ️Hostmaschine
+2. Docker ->️ ️Hostmaschine
 
 **Local:**
 

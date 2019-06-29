@@ -1,7 +1,7 @@
 Performance
 ===========
 
-Wir haben verschiedene Test aufgestellt um die Performance unseres Codes und die von Hadoop zu evaluieren. 
+Wir haben verschiedene Tests aufgestellt um die Performance unseres Codes und die von Hadoop zu evaluieren.
 
 Replace vs Regex
 ~~~~~~~~~~~~~~~~
@@ -111,3 +111,15 @@ In den unten stehenden Tabellen ist die Ausführungsdauer der jeweiligen Schritt
 | **Total**     | **502**         | **1085s**      | **1126s**      |
 +---------------+-----------------+----------------+----------------+
 
+Multi-Node-Cluster
+~~~~~~~~~~~~~~~~~~
+
+Nachträglich versuchten wir ein Multi-Node-Cluster bei dem Online-Dienst Hetzner aufzusetzen. Wir mieteten uns dort mehrere Server, um auf diesen jeweils einen unserer Docker-Container mit Hadoop starten zu können.
+Dadurch erhofften wir uns ein deutlich größeres Potential, unseren Sprachvergleich parallelisiert ausführen zu können.
+
+Wir erzeugten mithilfe des Python-Skriptes ``multiply_filesize.py`` eine größere Inputdatei, bei der wir die Länge der einzelnen Textdateien verfünffachten.
+Dadurch wollten wir herausfinden, wie sich Hadoop bei größeren Datenmengen verhält. Da es für Auswertung von Petabyte an Daten gedacht ist, wollten wir damit ein bisschen in diese Richtung gehen.
+Der MapReduce-Prozess profitiert durch die längeren Textdateien. Die Mapper werten über längere Zeit parallel die einzelnen Textdateien aus.
+Dadurch soll der Overhead, der durch Anlegen der verschiedenen Jobs und Mapper entsteht, kompensiert werden.
+
+Leider gelang es uns nicht den Job auf diesen Servern zu starten. Wir haben sehr viele Konfigurationen probiert, allerdings akzeptierte das HDFS die Slave-Container nicht als datanodes, obwohl dies beim Starten bestätigt wurde.

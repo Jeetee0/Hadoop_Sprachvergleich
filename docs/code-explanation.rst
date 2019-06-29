@@ -1,27 +1,27 @@
 Quellcodebeschreibung
 =====================
 
-In diesem Dokument soll der Quellcode genau beschrieben werden.
+In diesem Abschnitt soll der implementierte Quellcode genau beschrieben werden.
 
 
 Hadoop_sv
 ^^^^^^^^^
 
-In dieser Datei startet Hadoop.
+Die Hauptklasse des Projektes. Von dieser Klasse aus wird der Sprachvergleich gestartet.
 
 Main
 ~~~~
 
-Dies ist der Einstiegspunkt in das Programm. 
+Diese Methode ist der Einstiegspunkt in das Programm.
 
-Zum messen der Ausführungszeit nutzen nutzen wir ``System.currentTimeMillis()``.
+Zum Messen der Ausführungszeit nutzen wir ``System.currentTimeMillis()``.
 
 ::
 
     long totalStart = System.currentTimeMillis();
 
 
-Zuerst wird die Angabe der nötigen argumente überprüft und - wenn erfolgreich - gespeichert. 
+Zuerst wird die Angabe der nötigen Argumente überprüft und, wenn vorhanden, in Variablen gespeichert. Zusätzlich werden weitere Variablen initialisiert, die für die kommenden Schritte verwendet werden.
 
 ::
 
@@ -50,12 +50,14 @@ Danach erstellen wir eine Konfiguration für hadoop
 
     Configuration conf = new Configuration();
 
-Jetzt kann man entweder einen Job für alle Sprachpakete ausführen: 
+Jetzt kann entweder ein Job für alle Sprachpakete ausgeführt werden:
 ::
 
     startJobToCountWordLengthForAFolder(conf, new File(rootPath), destinationPath);
 
-oder für jede Sprache einen eigenen Job Ausführen (für Multi-Node Systeme sinnvoll). Wichtig ist die for-Schleife mit der Funktion ``startJobToCountWordLengthForAFolder``. Währendessen werden stets Debug informationen ausgegeben.
+oder für jede Sprache ein eigener Job ausgeführt werden (für Multi-Node-Cluster sinnvoll).
+Die for-Schleife mit der Funktion ``startJobToCountWordLengthForAFolder`` iteriert durch die bereitgestellten Ordner.
+Währendessen werden stets Debug-Informationen ausgegeben.
 
 ::
 
@@ -80,7 +82,7 @@ oder für jede Sprache einen eigenen Job Ausführen (für Multi-Node Systeme sin
     //data is located at: /hadoop_sprachvergleich/output/<language>/part-r-00000
 
 
-Zuletzt werden die PartFiles (Je Sprache ein Part-File mit einem Eintrag für jede .txt Datei dieser Sprache) aggregiert mit ``aggregatePartFiles``
+Zuletzt werden die "part"-Dateien mit der Methode ``aggregatePartFiles`` zusammengefasst, sodass aus den Einzeldateien jeder Sprache eine Datei entsteht, die Wörter aller Sprachen enthält.
 
 
 ::
@@ -91,16 +93,10 @@ Zuletzt werden die PartFiles (Je Sprache ein Part-File mit einem Eintrag für je
 startJobToCountWordLengthForAFolder
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Diese Funktion Startet die Haupt-Jobs mit dem MapReducer um die größten Wörter zu sammeln.
+Diese Methode startet einen Job, um die längsten Wörter aus einem Ordner zu sammeln.
 
-Zuerst kommen ein paar Debug Nachrichten:
-
-::
-
-    String currentLanguage = languageFolderFile.getName();
-    debugMessage(String.format("Start counting words for language folder: '%s''", currentLanguage), "DEBUG");
-
-Dann wird der Job erstellt und die Konfigurationen eingestellt. Es wird unsere Mapper- und Combiner-Class und die Reduce Menge auf 1 gesetzt. Da das Key-Value Pair ein "long-Text" darstellt setzen wir ``OutputKey`` und ``OutputValue`` entsprechend. 
+Der Job wird mithilfe der folgenden Codezeilen konfiguriert. Es werden unsere Mapper- und Reducer-Klassen genutzt. Die Anzahl der Reducer wird auf eins gesetzt. Dadurch erhalten wir nur eine Datei, die die Wörter beeinhaltet.
+Da das Key-Value Pair einen "Long-Text" erstellt, setzen wir ``OutputKey`` und ``OutputValue`` entsprechend.
 
 ::
 
@@ -113,7 +109,7 @@ Dann wird der Job erstellt und die Konfigurationen eingestellt. Es wird unsere M
     job.setOutputKeyClass(LongWritable.class);
     job.setOutputValueClass(Text.class);
 
-Um die Keys dann absteigend zu sortieren, sodass der Länge Eintrag oben zu finden ist, setzen wir noch folgenden Wert:
+Um die Keys absteigend zu sortieren, setzen wir noch folgenden Wert:
 
 ::
 

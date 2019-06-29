@@ -1,7 +1,7 @@
 Vergleich
 =========
 
-Die Ergebnisse sollen hier mit anderen Ausführungen verglichen werden.
+Die Ergebnisse des Sprachvergleichs auf unserem Single-Node-Cluster sollen hier mit anderen Ausführungen verglichen werden.
 
 Hadoop - Sprachvergleich ohne Sprachseparierung
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

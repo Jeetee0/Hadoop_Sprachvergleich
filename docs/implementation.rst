@@ -8,7 +8,7 @@ Entwicklerumgebung
 
 Mittels IDE oder Konsole kann ein Maven-Projekt erstellt werden, in
 welchem die Dependencies ``hadoop-core`` und
-``hadoop-mapreduce-client-core`` eingebunden werden müssen.
+``hadoop-mapreduce-client-core`` eingebunden werden müssen. Damit können Hadoop-Funktionen verwendet werden.
 
 Struktur
 ~~~~~~~~
@@ -32,23 +32,21 @@ Struktur
 
 
 
-Hauptklasse: **Hadoop_sv.java**
+Hauptklasse - **Hadoop_sv.java**
 
-- Umfasst Konfiguration (Drei Variablen als Argumente: Input, Output & Results)
+- Umfasst Konfiguration der Hadoop-Jobs und Verarbeitung der Eingangsvariablen (Drei Variablen als Argumente: Input, Output & Results)
 - Ausführen der verschiedenen Jobmethoden
 - Konsolenausgaben zum nachvollziehen des Fortschritts
 - Stoppt die Zeit zum Ausführen der verschiedenen Jobs
 
-Mapper: 
+Mapper - **RegexMapper**/**ReplaceMapper**:
 
-**RegexMapper**/**ReplaceMapper**:
-
-- Findet in jeder Datei das längste Wort
+- Liest alle Wörter einer Datei und zählt die Länge. Gibt nur das längste Wort an den Reducer weiter.
 
 
 **AggregationMapper**
 
-- Findet das längste Wort von jeder Sprache
+- Bearbeitet Dateien verschiedener Sprachen und fässt die längsten Wörter aller Sprachen zusammen.
 
 Reducer: **SV_Reducer**
 

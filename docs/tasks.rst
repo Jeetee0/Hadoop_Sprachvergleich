@@ -15,8 +15,6 @@ Dies ist eine Belegaufgabe im Rahmen unseres Studiums an der HTW Berlin im Maste
 
 Dabei soll eine Ausgabe in der Form: "Sprache – Längstes Wort – Länge“ generiert werden.
 
-`sequenceiq <https://hub.docker.com/r/sequenceiq/hadoop-docker/>`__
-
 Dokumentationsanforderungen
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -43,6 +41,18 @@ Hadoop stellt vorrangig vier Dinge bereit:
 
 Wir arbeiten dabei besonders eng mit HDFS und MapReduce zusammen.
 
-Mittels Docker starten wir einen Single-Node Cluster. Auf diesen können wir durch HDFS (Hadoop distributed file system) automatisch alle Textdateien (.txt-Format) verteilt speichern. Außerdem können Jobs ausgeführt werden, um die Dateien zu verarbeiten.
 
-Wir starten pro Sprache einen Job der den MapReduce Prozess ausführt. Dieser findet für eine Sprache das längste Wort und speichert dieses in einer Part-Datei.
+Mittels Docker starten wir einen Container, der ein Single-Node Cluster für Hadoop bildet. Auf diesem können wir durch HDFS (Hadoop distributed file system) automatisch alle Textdateien (.txt-Format) verteilt speichern. Außerdem können Jobs ausgeführt werden, um die Dateien zu verarbeiten.
+
+Den Sprachvergleich wollen wir durch folgende Prozedur ermöglichen:
+
+Das Input-Verzeichnis sollte die Struktur "<rootPath>/<languageDirectories>/TXT/<txt-files>" aufweisen
+Damit wird jedes "languageDirectory" rekursiv nach allen Textdateien durchsucht.
+Für jede Sprache wird ein Job erstellt, der den MapReduce-Prozess ausführt. Jede Textdatei wird mithilfe des RegEx-Mappers durchlaufen und dadurch das längste Wort herausgefunden.
+Der Reducer fasst alle "langen" Wörter zusammen, sortiert diese und stellt sie in einer Datei bereit. Jetzt besitzen wir pro Sprache eine Output-Datei mit den längsten Wörtern.
+
+Um die längsten Wörter jeder Sprache zu finden, wird ein zweiter Job gestartet: der AggregationJob. Dieser findet aus jeder Output-Datei das längste Wort der Sprache und fügt sie zusammen.
+Damit kommt am Ende des Sprachvergleichs eine Datei heraus, die für jede Sprache das längste Wort mit der Form: "Sprache – Längstes Wort – Länge" anzeigt.
+
+
+Wir benötigen also eine Hauptklasse, die die verschiedenen Sprach-Jobs und den AggregagtionJob koordiniert. Zusätzlich soll ein Timer benutzt werden, um die Ausführungsdauer zu protokollieren.

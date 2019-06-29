@@ -14,7 +14,6 @@ Wilkommen zur Hadoop Sprachvergleich dokumentation!
 
    tasks
    installation
-   usefulCommands
    implementation
    code-explanation
    performance
