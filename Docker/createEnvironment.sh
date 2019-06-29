@@ -15,8 +15,8 @@ $HADOOP_PREFIX/bin/hdfs dfs -mkdir /hadoop_sv
 $HADOOP_PREFIX/bin/hdfs dfs -put /hadoop_sv/textfiles /hadoop_sv/		# main
 $HADOOP_PREFIX/bin/hdfs dfs -put /hadoop_sv/test_textfiles /hadoop_sv/	# test
 
-# give hdfs jar
-$HADOOP_PREFIX/bin/hdfs dfs -put /hadoop_sv/hadoop_sv.jar /hadoop_sv
+# give hdfs jar (not necessary)
+#$HADOOP_PREFIX/bin/hdfs dfs -put /hadoop_sv/hadoop_sv.jar /hadoop_sv
 
 # show
 echo "--- INFO ---: HDFS has following content:"

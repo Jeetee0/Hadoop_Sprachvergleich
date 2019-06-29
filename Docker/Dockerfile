@@ -16,13 +16,9 @@ ADD test_textfiles.zip hadoop_sv/
 RUN unzip /hadoop_sv/test_textfiles.zip -d /hadoop_sv/test_textfiles
 
 # QA environment zip (abstract of all files):
-ADD textfiles_mini_2_languages.zip hadoop_sv/
-RUN unzip /hadoop_sv/textfiles_mini_2_languages.zip -d /hadoop_sv/textfiles
+#ADD textfiles_mini_2_languages.zip hadoop_sv/
+#RUN unzip /hadoop_sv/textfiles_mini_2_languages.zip -d /hadoop_sv/textfiles
 
 # production environment zip (all files):
-#ADD textfiles.zip hadoop_sv/
-#RUN unzip /hadoop_sv/textfiles.zip -d /hadoop_sv/
-
-
-
-
+ADD textfiles.zip hadoop_sv/
+RUN unzip /hadoop_sv/textfiles.zip -d /hadoop_sv/textfiles
